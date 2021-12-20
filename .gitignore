@@ -1,6 +1,5 @@
 
 Components/work/_lib1_0.qdb
-*.bak
 Components/work/_vmake
 Components/work/_lib1_0.qtl
 Components/work/_lib1_0.qpg
@@ -9,3 +8,4 @@ Components/work/_info
 Components/vsim.wlf
 Components/ProcessorComponents.mpf
 Components/ProcessorComponents.cr.mti
+Components/ALU.v.bak
