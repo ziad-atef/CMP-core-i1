@@ -1,10 +1,12 @@
+// +FHDR------------------------------------------------------------------------
 // FILE NAME : ALU.v
 // DEPARTMENT : Computer engineering, Cairo university
 // AUTHOR : Ziad Atef
 // -----------------------------------------------------------------------------
 // RELEASE HISTORY
 // VERSION DATE AUTHOR DESCRIPTION
-// 1.0 17-12-2021 ziad initial version
+// 1.0   17-12-2021 ziad initial version
+// 1.0.1 23-12-2021 ziad added set c to the operations
 // -----------------------------------------------------------------------------
 // PURPOSE : perform all the arithmatic and logic operations.
 // -----------------------------------------------------------------------------
@@ -43,17 +45,25 @@ output reg [2:0] flags_out; // new flags due to the operation flags_out[0] is ca
 
 always @(operand1 or operand2 or operation)
 begin: alu_op
+    //addition
     if ( operation == 3'b000 )
 	    { flags_out[0],result } <= operand1 + operand2;
-//    else if ( operation == 3'b001 )
+    //set c
+    else if ( operation == 3'b001 )
+        flags_out[0] <= 1'b1;
+    //subtraction
     else if ( operation == 3'b010 )
         result <= operand1 - operand2;
+    //bit-wise and
     else if ( operation == 3'b011 )
         result <= operand1 & operand2;
+    //complment(not)
     else if ( operation == 3'b100 )
         result <= ~operand1;
+    //pass first operand
     else if ( operation == 3'b101 )
         result <= operand1;
+    //pass second operand
     else if ( operation == 3'b110 )
         result <= operand2;
 //    else if ( operation == 3'b111 )

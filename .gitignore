@@ -8,4 +8,5 @@ Components/work/_info
 Components/vsim.wlf
 Components/ProcessorComponents.mpf
 Components/ProcessorComponents.cr.mti
-Components/ALU.v.bak
+*.v.bak
+work
