@@ -45,6 +45,18 @@ output reg [2:0] flags_out; // new flags due to the operation flags_out[0] is ca
 
 always @(operand1 or operand2 or operation)
 begin: alu_op
+    case (operation)  
+        3'b000 :    { flags_out[0],result } <= operand1 + operand2;  //addition
+        3'b001 :    flags_out[0] <= 1'b1;                            //set c
+        3'b010 :    result <= operand1 - operand2;                   //subtraction
+        3'b011 :    result <= operand1 & operand2;                   //bit-wise and
+        3'b100 :    result <= ~operand1;                             //complment(not)
+        3'b101 :    result <= operand1;                              //pass first operand
+        3'b110 :    result <= operand2;                              //pass second operand
+        3'b111:    result <= {16{1'bz}};                             //none of the above cases                          
+    
+    endcase 
+/*
     //addition
     if ( operation == 3'b000 )
 	    { flags_out[0],result } <= operand1 + operand2;
@@ -67,5 +79,6 @@ begin: alu_op
     else if ( operation == 3'b110 )
         result <= operand2;
 //    else if ( operation == 3'b111 )
+*/
 end // alu_op
 endmodule // ALU

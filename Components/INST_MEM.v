@@ -1,5 +1,5 @@
 // +FHDR------------------------------------------------------------------------
-// FILE NAME : DATA_MEM.v
+// FILE NAME : INST_MEM.v
 // DEPARTMENT : Computer engineering, Cairo university
 // AUTHOR : Ziad Atef
 // -----------------------------------------------------------------------------
@@ -7,7 +7,7 @@
 // VERSION DATE AUTHOR DESCRIPTION
 // 1.0 22-12-2021 ziad initial version
 // -----------------------------------------------------------------------------
-// PURPOSE : contains stack and heap memories to store variables
+// PURPOSE : stores program instructions to be used
 // -----------------------------------------------------------------------------
 // PARAMETERS
 // PARAM NAME RANGE : DESCRIPTION : DEFAULT : UNITS
@@ -25,50 +25,19 @@
 // Other : uses synthesis directive to infer a mux to
 // avoid glitching clock_out and clock_out_b
 // -FHDR------------------------------------------------------------------------
-module DATA_MEM(
- clk,
- re,
- we,
- en32,
+module INST_MEM(
  address,
- data_in, 
  data_out
  );
-input clk;
-input re;
-input we;
-input en32;   
 input [19:0] address;
-input [31:0] data_in; 
 output reg [31:0] data_out;
 
 reg [15:0] RAM [0:2**10];
 integer adrs;
 
-always @(posedge clk)
+always
 begin: data_mem_op
     adrs = address;
-
-    if (re) begin
-        if(en32) begin
-            data_out <= {RAM[adrs+1],RAM[adrs]};
-        end
-        else begin
-            data_out <= {16'b0,RAM[adrs]};
-        end
-    end
-    else begin
-        data_out <= {32{1'bz}};
-    end
-
-    if (we) begin
-        if(en32) begin
-            {RAM[adrs+1],RAM[adrs]} <= data_in;
-        end
-        else begin
-            RAM[adrs] <= data_in;
-        end
-        
-    end
-end // data_mem_op
-endmodule // DATA_MEM
+    data_out <= {RAM[adrs+1],RAM[adrs]};
+end // inst_mem_op
+endmodule // INST_MEM
