@@ -29,7 +29,7 @@ module INST_MEM(
  address,
  data_out
  );
-input [19:0] address;
+input [31:0] address;
 output reg [31:0] data_out;
 
 reg [15:0] RAM [0:2**10];

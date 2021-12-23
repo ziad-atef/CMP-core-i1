@@ -53,8 +53,7 @@ begin: alu_op
         3'b100 :    result <= ~operand1;                             //complment(not)
         3'b101 :    result <= operand1;                              //pass first operand
         3'b110 :    result <= operand2;                              //pass second operand
-        3'b111:    result <= {16{1'bz}};                             //none of the above cases                          
-    
+        3'b111 :    result <= {16{1'bz}};                             //none of the above cases                          
     endcase 
 /*
     //addition
