@@ -1,0 +1,6 @@
+{
+    "input_path" : "code.txt",
+    "output_path" : "output.mem",
+    "mode" : "memory",
+    "instance" : "/ram/ram"
+}
