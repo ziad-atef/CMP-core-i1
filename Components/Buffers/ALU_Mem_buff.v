@@ -11,7 +11,7 @@ module alu_mem_buff
     input [31:0] i_pc  ,
     input [2: 0] i_Rdst,
     input [15:0] i_alu , i_read_data1 ,
-    input [flagSize-1:0] i_flag ; 
+    input [flagSize-1:0] i_flag ,
 
     output [MemSize-1:0] o_Mem,
     output [WbSize-1 :0] o_WB, 
