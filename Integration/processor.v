@@ -1,12 +1,12 @@
 module processor(
     input rst , clk,
     input [15:0] in,
-    output [15:0] out;
+    output [15:0] out
 );
 
-wire fetchEnableBuf, regWrite, Rdst;
+wire fetchEnableBuf,  Rdst;
 wire [1:0] pc_select;
-wire [15:0] writeData,readData1,readData2;
+wire [15:0] readData1,readData2;
 wire [31:0] pc , instruction;
 // -------------------------------------------------------- Fetch Stage --------------------------------------
     fetch fetchObj(
@@ -27,7 +27,7 @@ wire [31:0] pc , instruction;
 
 // -------------------------------------------------------- Deocde Stage --------------------------------------
     reg regWrite ;
-    reg [15:0] writeData,;
+    reg [15:0] writeData;
     decode decodeObj(
         .clk(clk),                           // 1  bits
         .rst(rst),                           // 1  bits
