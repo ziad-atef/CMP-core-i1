@@ -47,7 +47,10 @@ always @(operand1 or operand2 or operation)
 begin: alu_op
     case (operation)  
         3'b000 :    { flags_out[0],result } <= operand1 + operand2;  //addition
-        3'b001 :    flags_out[0] <= 1'b1;                            //set c
+        3'b001 :    begin
+            flags_out[0] <= 1'b1;                                    //set c
+            result <= 0;               
+        end
         3'b010 :    result <= operand1 - operand2;                   //subtraction
         3'b011 :    result <= operand1 & operand2;                   //bit-wise and
         3'b100 :    result <= ~operand1;                             //complment(not)
