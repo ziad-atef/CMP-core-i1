@@ -14,8 +14,8 @@ module fetch(
     wire [31:0] instructionWire; 
     reg [31:0] pc; 
     reg [31:0] wire1 ;
-    // always @(posedge clk) begin/
-    always @(*) begin
+    always @(posedge clk) begin
+    // always @(*) begin
         case (pc_place)
             4'b00:
                 case (pc_select) 
