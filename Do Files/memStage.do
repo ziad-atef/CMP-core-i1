@@ -10,10 +10,8 @@ mem load -skip {} -filltype inc -filldata 1 -fillradix unsigned /memStage/mem1/R
 mem load -skip {} -filltype inc -filldata 1 -fillradix unsigned /memStage/mem1/RAM
 add wave -position insertpoint  \
 sim:/memStage/clk \
-sim:/memStage/reset \
+sim:/memStage/i_reset \
 sim:/memStage/i_wb \
-sim:/memStage/i_Rdst \
-sim:/memStage/enableMemBuffer \
 sim:/memStage/i_isStack \
 sim:/memStage/i_aluData \
 sim:/memStage/i_stackData \
@@ -27,14 +25,11 @@ sim:/memStage/o_wb \
 sim:/memStage/o_aluData \
 sim:/memStage/o_memData \
 sim:/memStage/address \
-sim:/memStage/o_hazardUnit \
 sim:/memStage/writeData
 
-force -freeze sim:/memStage/clk 0 0, 1 {50 ns} -r 100
-force -freeze sim:/memStage/enableMemBuffer 1 0
-force -freeze sim:/memStage/i_Rdst 6 0
+force -freeze sim:/memStage/clk 0 0, 1 {50 ps} -r 100
 
-force -freeze sim:/memStage/reset 0 0
+force -freeze sim:/memStage/i_reset 0 0
 force -freeze sim:/memStage/i_wb 5 0
 force -freeze sim:/memStage/i_isStack 1 0
 force -freeze sim:/memStage/i_aluData 10 0
@@ -44,10 +39,10 @@ force -freeze sim:/memStage/i_pc 5 0
 force -freeze sim:/memStage/i_instruction 7 0
 force -freeze sim:/memStage/i_memRead 1 0
 force -freeze sim:/memStage/i_memWrite 0 0
-force -freeze sim:/memStage/i_en32 0 0
+force -freeze sim:/memStage/i_en32 1 0
 run
 
-force -freeze sim:/memStage/reset 1 0
+force -freeze sim:/memStage/i_reset 1 0
 force -freeze sim:/memStage/i_wb 5 0
 force -freeze sim:/memStage/i_isStack 0 0
 force -freeze sim:/memStage/i_aluData 12 0
@@ -58,7 +53,7 @@ force -freeze sim:/memStage/i_instruction 15 0
 run
 
 
-force -freeze sim:/memStage/reset 0 0
+force -freeze sim:/memStage/i_reset 0 0
 force -freeze sim:/memStage/i_wb 3 0
 force -freeze sim:/memStage/i_isStack 1 0
 force -freeze sim:/memStage/i_aluData 16 0
@@ -68,7 +63,7 @@ force -freeze sim:/memStage/i_pc 12 0
 force -freeze sim:/memStage/i_instruction 20 0
 run
 
-force -freeze sim:/memStage/reset 1 0
+force -freeze sim:/memStage/i_reset 1 0
 force -freeze sim:/memStage/i_wb 3 0
 force -freeze sim:/memStage/i_isStack 0 0
 force -freeze sim:/memStage/i_aluData 22 0
@@ -77,13 +72,14 @@ force -freeze sim:/memStage/i_isPushPc 0 0
 force -freeze sim:/memStage/i_pc 18 0
 force -freeze sim:/memStage/i_instruction 31 0
 run
+run
 
 
 
-// ------------- test write to memory --- 
+// ------------- test write to memory ----------------------
 
 force -freeze sim:/memStage/clk 0 0, 1 {50 ps} -r 100
-force -freeze sim:/memStage/reset 0 0
+force -freeze sim:/memStage/i_reset 0 0
 force -freeze sim:/memStage/i_wb 5 0
 force -freeze sim:/memStage/i_isStack 1 0
 force -freeze sim:/memStage/i_aluData 10 0
@@ -96,7 +92,7 @@ force -freeze sim:/memStage/i_memWrite 1 0
 force -freeze sim:/memStage/i_en32 0 0
 run
 
-force -freeze sim:/memStage/reset 1 0
+force -freeze sim:/memStage/i_reset 1 0
 force -freeze sim:/memStage/i_wb 5 0
 force -freeze sim:/memStage/i_isStack 0 0
 force -freeze sim:/memStage/i_aluData 12 0
@@ -107,7 +103,7 @@ force -freeze sim:/memStage/i_instruction 15 0
 run
 
 
-force -freeze sim:/memStage/reset 0 0
+force -freeze sim:/memStage/i_reset 0 0
 force -freeze sim:/memStage/i_wb 3 0
 force -freeze sim:/memStage/i_isStack 1 0
 force -freeze sim:/memStage/i_aluData 16 0
@@ -117,7 +113,7 @@ force -freeze sim:/memStage/i_pc 12 0
 force -freeze sim:/memStage/i_instruction 20 0
 run
 
-force -freeze sim:/memStage/reset 1 0
+force -freeze sim:/memStage/i_reset 1 0
 force -freeze sim:/memStage/i_wb 3 0
 force -freeze sim:/memStage/i_isStack 0 0
 force -freeze sim:/memStage/i_aluData 22 0

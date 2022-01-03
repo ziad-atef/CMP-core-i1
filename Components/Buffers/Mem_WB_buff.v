@@ -10,10 +10,10 @@ module Mem_WB_buff
     input  [15:0] i_alu,
     input  [2:0 ] i_Rdst, 
 
-    output [2: 0] o_WB,
-    output [31:0] o_MemData ,
-    output [15:0] o_alu,
-    output [ 2:0] o_Rdst 
+    output reg [WbSize-1 :0 ] o_WB,
+    output reg [31:0] o_MemData ,
+    output reg [15:0] o_alu,
+    output reg [ 2:0] o_Rdst 
 );
     always @(negedge clk) begin
         // if(rst == 1'b1) begin
