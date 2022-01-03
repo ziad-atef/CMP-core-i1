@@ -26,18 +26,16 @@
 // avoid glitching clock_out and clock_out_b
 // -FHDR------------------------------------------------------------------------
 module INST_MEM(
- address,
- data_out
+    address,
+    data_out
  );
-input [31:0] address;
-output reg [31:0] data_out;
+    input [31:0] address;
+    output reg [31:0] data_out;
 
-reg [15:0] RAM [0:2**10];
-integer adrs;
-
-always
-begin: data_mem_op
-    adrs = address;
-    data_out <= {RAM[adrs+1],RAM[adrs]};
-end // inst_mem_op
+    reg [15:0] RAM [0:2**10];
+    integer adrs;
+   always @(address) begin
+      adrs = address;
+      data_out = {RAM[adrs+1],RAM[adrs]};
+   end
 endmodule // INST_MEM

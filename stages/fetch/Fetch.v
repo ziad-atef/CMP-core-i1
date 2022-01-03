@@ -1,17 +1,21 @@
 module fetch(
-    input  clk,
+    input clk,
+    input enableBuf,
     input [1:0] pc_select ,
     input [3:0] pc_place ,
     input [2:0] index,
     input [31:0] IVT , ret , reset,
     input [15:0] call,
 
-    output reg [31:0] new_pc , instruction  ,  
-    output reg intFlag     
+    output [31:0] instruction,  
+    output [31:0] new_pc  
+    // ,output reg intFlag     
 );
-    // reg [31:0] pc;
-    reg [31:0] wire1;
-    always @(posedge clk) begin
+    wire [31:0] instructionWire; 
+    reg [31:0] pc; 
+    reg [31:0] wire1 ;
+    // always @(posedge clk) begin/
+    always @(*) begin
         case (pc_place)
             4'b00:
                 case (pc_select) 
@@ -39,8 +43,19 @@ module fetch(
             default:
                 wire1  = reset; // zero extend 
         endcase
-        new_pc  = wire1;
-        instruction = 7;  
-        intFlag = 1;
+        pc  = wire1;
+        // intFlag = 1;
     end
+    INST_MEM instMem(
+        .address(pc),
+        .data_out(instructionWire)
+    );
+
+    fetch_dec_buf fetchBuffer (
+        .clk(clk),  .enable(enableBuf),
+        .i_pc(pc), 
+        .i_instruction(instructionWire),
+        .o_pc(new_pc),
+        .o_instruction(instruction)
+    );
 endmodule

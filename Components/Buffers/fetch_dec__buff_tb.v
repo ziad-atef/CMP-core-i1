@@ -7,7 +7,8 @@ module fetch_dec__buff_tb;
     wire [31:0] o_pc , o_instruction;
 // Instantiate the Unit Under Test (UUT)
     fetch_dec_buf uut (
-        .clk(clk), .rst(rst), .enable(enable),
+        // .rst(rst),
+        .clk(clk),  .enable(enable),
         .i_pc(i_pc), 
         .i_instruction(i_instruction),
         .o_pc(o_pc),
@@ -17,7 +18,7 @@ module fetch_dec__buff_tb;
     initial begin
         enable = 0;
         clk = 0;
-        rst = 0;
+        // rst = 0;
         i_pc=0;
         i_instruction=0;
     end
@@ -51,8 +52,8 @@ module fetch_dec__buff_tb;
         i_pc =99;
         i_instruction=199;    
     end
-    always  begin
-      #1000 rst=1;
-    end
+    // always  begin
+    //   #1000 rst=1;
+    // end
     
 endmodule
