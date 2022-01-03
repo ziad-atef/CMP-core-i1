@@ -1,9 +1,9 @@
+module dec_alu_buf 
     #( parameter    
         WbSize  = 4,
         MemSize = 6,
         ExSize  = 3
     )
-module dec_alu_buf 
     (
     // input rst,
     input  clk,enable,
