@@ -11,4 +11,4 @@ Components/ProcessorComponents.mpf
 Components/ProcessorComponents.cr.mti
 *.v.bak
 work
-./project
+project
