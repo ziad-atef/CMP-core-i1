@@ -31,3 +31,77 @@ run
 force -freeze sim:/HDU_INT/i_instruction 11111000000000000000000000000000 0
 run
 run
+quit -sim
+# End time: 00:26:56 on Jan 07,2022, Elapsed time: 0:05:16
+# Errors: 0, Warnings: 0
+# Compile of HDU_LOAD_USE_CASE.v was successful.
+vsim -gui work.HDU_LOAD_USE_CASE
+# vsim -gui work.HDU_LOAD_USE_CASE 
+# Start time: 00:36:14 on Jan 07,2022
+# Loading work.HDU_LOAD_USE_CASE
+add wave -position insertpoint sim:/HDU_LOAD_USE_CASE/*
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rsrc1 000 0
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rsrc2 000 0
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rdst 000 0
+force -freeze sim:/HDU_LOAD_USE_CASE/i_memRead 0 0
+run
+quit -sim
+# End time: 00:37:40 on Jan 07,2022, Elapsed time: 0:01:26
+# Errors: 0, Warnings: 0
+# Compile of HDU_LOAD_USE_CASE.v was successful.
+# Compile of HDU_LOAD_USE_CASE.v was successful.
+vsim -gui work.HDU_LOAD_USE_CASE
+# vsim -gui work.HDU_LOAD_USE_CASE 
+# Start time: 00:37:47 on Jan 07,2022
+# Loading work.HDU_LOAD_USE_CASE
+# vsim -gui work.HDU_LOAD_USE_CASE 
+# Start time: 00:36:14 on Jan 07,2022
+# Loading work.HDU_LOAD_USE_CASE
+add wave -position insertpoint sim:/HDU_LOAD_USE_CASE/*
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rsrc1 000 0
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rsrc2 000 0
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rdst 000 0
+force -freeze sim:/HDU_LOAD_USE_CASE/i_memRead 0 0
+
+run
+quit -sim
+# End time: 00:39:00 on Jan 07,2022, Elapsed time: 0:01:13
+# Errors: 0, Warnings: 0
+# Compile of HDU_LOAD_USE_CASE.v was successful.
+# Compile of HDU_LOAD_USE_CASE.v was successful.
+# Compile of HDU_LOAD_USE_CASE.v was successful.
+vsim -gui work.HDU_LOAD_USE_CASE
+# vsim -gui work.HDU_LOAD_USE_CASE 
+# Start time: 00:39:06 on Jan 07,2022
+# Loading work.HDU_LOAD_USE_CASE
+# vsim -gui work.HDU_LOAD_USE_CASE 
+# Start time: 00:37:47 on Jan 07,2022
+# Loading work.HDU_LOAD_USE_CASE
+# vsim -gui work.HDU_LOAD_USE_CASE 
+# Start time: 00:36:14 on Jan 07,2022
+# Loading work.HDU_LOAD_USE_CASE
+add wave -position insertpoint sim:/HDU_LOAD_USE_CASE/*
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rsrc1 000 0
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rsrc2 000 0
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rdst 000 0
+force -freeze sim:/HDU_LOAD_USE_CASE/i_memRead 0 0
+
+run
+
+run
+force -freeze sim:/HDU_LOAD_USE_CASE/i_memRead 1 0
+run
+run
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rsrc2 1 0
+run
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rsrc1 1 0
+run
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rdst 2 0
+# Invalid binary digit: 2.
+# ** Error: (vsim-4011) Invalid force value: 2 0.
+# 
+run
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rdst 010 0
+run
+force -freeze sim:/HDU_LOAD_USE_CASE/i_Rsrc2 010 0
+run
