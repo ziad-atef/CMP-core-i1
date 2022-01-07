@@ -55,18 +55,18 @@ wire [15:0] writeBackData;
 
 
     decode decodeObj(
-        .clk(clk),                           // 1  bits
-        .rst(rst),                           // 1  bits
-        .regWrite(o_MemBuf_Wb[1]),                 // 1  bits 
-        .Rsrc1(instruction[18:16]),          // 3  bits
-        .Rsrc2(instruction[21:19]),          // 3  bits
-        .Rdst(o_MemBuf_Rdst),           // 3  bits
-        .opcode(instruction[31:25]),         // 7  bits 
-        .writeData(writeBackData),               // 16 bits
-        .inPort(16'b0),                      // 16 bits      
-        .signals(signals),               // 23 bits
-        .readData1(readData1),               // 16 bits
-        .readData2(readData2)                // 16 bits
+        .clk(clk),                                                               // 1  bits
+        .rst(rst),                                                               // 1  bits
+        .regWrite(o_MemBuf_Wb[1]),                                               // 1  bits 
+        .Rsrc1(instruction[18:16]),                                              // 3  bits
+        .Rsrc2(instruction[21:19]),                                              // 3  bits
+        .Rdst(o_MemBuf_Rdst),                                                    // 3  bits
+        .opcode(instruction[31:25]),                                             // 7  bits 
+        .writeData(writeBackData),                                               // 16 bits
+        .inPort(16'b0),                                                          // 16 bits      
+        .signals(signals),                                                       // 23 bits
+        .readData1(readData1),                                                   // 16 bits
+        .readData2(readData2)                                                    // 16 bits
     );
 
     dec_alu_buf dec_alu_bufObj 
