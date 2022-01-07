@@ -26,7 +26,7 @@ module execute(
     output [15:0] ALU_out;
 
     wire [15:0]data1_mux,data2_mux,imm_mux;
-    wire [2:0] flags;
+    output [3:0] flags;
 
     assign data1_mux = (data1)?data1_val:data2_val;
     assign data2_mux = (data2)?data2_val:1;
