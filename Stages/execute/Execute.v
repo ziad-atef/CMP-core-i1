@@ -32,7 +32,7 @@ module execute(
     assign data2_mux = (data2)?data2_val:1;
     assign imm_mux = (imm)?imm_val:data2_mux;
 
-    ALU u0(.operand1(data1_mux), .operand2(imm_mux), .operation(ALUoperation), .flags_in(3'b0), .result(ALU_out), .flags_out(flags));
+    ALU u0(.operand1(data1_mux), .operand2(imm_mux), .operation(ALUoperation), .flags_in(4'b0), .result(ALU_out), .flags_out(flags));
     
     
     /*

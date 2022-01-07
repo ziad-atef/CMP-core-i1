@@ -90,16 +90,35 @@ wire [31:0] pc , instruction;
     );
 
 
+    wire [15:0] alu_out;
+    wire [15:0] execute_buffer_alu_output;
+    wire [3:0] flags;
+    wire [3:0] execute_buffer_flags_output;
+
+    execute ExecuteObj (
+        .clk(clk),
+        .data1_val(o_decBuf_ReadData1),
+        .data_val2(o_decBuf_ReadData2),
+        .imm_val(o_decBuf_immd),
+        .ALU_out(alu_out),
+        .flags(flags)
+    );
+
+    alu_mem_buff alu_mem_buffObj(
+        .clk(clk),
+        .enable(1'b1),
+        .i_alu(alu_out), 
+        .o_out(execute_buffer_alu_output),
+        .i_flag(flags),
+        .o_flag(execute_buffer_flags_output)
+        
+
+    );
 // -------------------------------------------------------- Execute Stage --------------------------------------
         // execute ExcecuteObj(
         //     .clk(clk),             // 1  bit
-        //     .data1(),           // 1  bit
-        //     .data2(),           // 1  bit
-        //     .imm(),             // 1  bit
-        //     .flag_src(),        // 1  bit
-        //     .ALUsrc1(),         // 2  bit
-        //     .ALUsrc2(),         // 2  bit
-        //     .ALUoperation(),    // 3  bit
+        //     
+        
         //     .data1_val(),       // 16 bit
         //     .data2_val(),       // 16 bit
         //     .imm_val(),         // 16 bit
@@ -111,7 +130,7 @@ wire [31:0] pc , instruction;
         //     .clk(clk),
         //     .enable(1'b1),
         //     .i_Mem( ),           //6   bits
-        //     .i_WB(),            //4   bits
+        //     .i_WB(),            //4   bits   
         //     .i_pc()  ,          //32  bits
         //     .i_Rdst(),          //3   bits
         //     .i_alu() ,          //16  bits
