@@ -1,6 +1,6 @@
 module alu_mem_buff     
     #( parameter    
-        WbSize  = 4,
+        WbSize  = 2,
         MemSize = 6, 
         flagSize =4
     )(
