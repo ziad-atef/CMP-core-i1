@@ -4,129 +4,130 @@ module processor(
     output [15:0] out
 );
 
-// wire fetchEnableBuf,  Rdst;
-// wire [1:0] pc_select;
-// wire [15:0] readData1,readData2;
-// wire [31:0] pc , instruction;
+wire fetchEnableBuf,  Rdst;
+wire [1:0] pc_select;
+wire [15:0] readData1,readData2;
+wire [31:0] pc , instruction;
 // -------------------------------------------------------- Fetch Stage --------------------------------------
-    // wire [31:0] tmpPc, tmpInstruction;
-    // reg [3:0] pcPlace;
-    // fetch fetchObj(
-    //     .clk(clk),                                 //1  bits
-    //     .pc_select(pc_select),                     //2  bits
-    //     .pc_place(4'd0),                           //4  bits
-    //     .index(3'd3),                              //3  bits
-    //     .IVT(32'd12),                              //32  bits
-    //     .ret(32'd27),                              //32  bits
-    //     .reset(32'd57),                            //32  bits
-    //     .call(16'd33),                             //16  bits
-    //     .new_pc(tmpPc) ,                           //32  bits
-    //     .instruction(tmpInstruction)               //32  bits
-    //     // ,.intFlag(intFlag)
-    // );
+    wire [31:0] tmpPc, tmpInstruction;
+    reg [3:0] pcPlace;
+    fetch fetchObj(
+        .clk(clk),                                 //1  bits
+        .pc_select(pc_select),                     //2  bits
+        .pc_place(4'd0),                           //4  bits
+        .index(3'd3),                              //3  bits
+        .IVT(32'd12),                              //32  bits
+        .ret(32'd27),                              //32  bits
+        .reset(32'd57),                            //32  bits
+        .call(16'd33),                             //16  bits
+        .new_pc(tmpPc) ,                           //32  bits
+        .instruction(tmpInstruction)               //32  bits
+        // ,.intFlag(intFlag)
+    );
 
-    // fetch_dec_buf fetchBuf (
-    //     // .rst(rst),
-    //     .clk(clk),  
-    //     .enable(1'b1),
-    //     .i_pc(tmpPc), 
-    //     .i_instruction(tmpInstruction),               
-    //     .o_pc(pc),          
-    //     .o_instruction(instruction)
-    // );
+    fetch_dec_buf fetchBuf (
+        // .rst(rst),
+        .clk(clk),  
+        .enable(1'b1),
+        .i_pc(tmpPc), 
+        .i_instruction(tmpInstruction),               
+        .o_pc(pc),          
+        .o_instruction(instruction)
+    );
 // -------------------------------------------------------- Deocde Stage --------------------------------------
-    // reg regWrite ;
-    // reg [15:0] writeData;
-    // decode decodeObj(
-    //     .clk(clk),                           // 1  bits
-    //     .rst(rst),                           // 1  bits
-    //     .regWrite(regWrite),                 // 1  bits 
-    //     .Rsrc1(instruction[18:16]),          // 3  bits
-    //     .Rsrc2(instruction[21:19]),          // 3  bits
-    //     .Rdst(instruction[24:22]),           // 3  bits
-    //     .opcode(instruction[31:25]),         // 7  bits 
-    //     .writeData(writeData),               // 16 bits
-    //     .inPort(16'b0),                      // 16 bits      
-    //     .signals({pc_select}),               // 23 bits
-    //     .readData1(readData1),               // 16 bits
-    //     .readData2(readData2)                // 16 bits
-    // );
+    reg regWrite ;
+    reg [15:0] writeData;
+    decode decodeObj(
+        .clk(clk),                           // 1  bits
+        .rst(rst),                           // 1  bits
+        .regWrite(regWrite),                 // 1  bits 
+        .Rsrc1(instruction[18:16]),          // 3  bits
+        .Rsrc2(instruction[21:19]),          // 3  bits
+        .Rdst(instruction[24:22]),           // 3  bits
+        .opcode(instruction[31:25]),         // 7  bits 
+        .writeData(writeData),               // 16 bits
+        .inPort(16'b0),                      // 16 bits      
+        .signals({pc_select}),               // 23 bits
+        .readData1(readData1),               // 16 bits
+        .readData2(readData2)                // 16 bits
+    );
 
-    // wire [3:0] o_decBuf_Wb;
-    // wire [5:0] o_decBuf_Mem;
-    // wire [2:0] o_decBuf_Ex;
-    // wire  o_decBuf_chgFlag;
-    // wire [31:0] o_decBuf_pc;
-    // wire [2:0] o_decBuf_Rsrc1, o_decBuf_Rsrc2, o_decBuf_Rdst;
-    // wire [15:0] o_decBuf_immd, o_decBuf_ReadData1, o_decBuf_ReadData2;
-    // dec_alu_buf dec_alu_bufObj 
-    // (
-    // // input rst,
-    //     .clk(clk),
-    //     .enable(1'b1),
-    //     .i_WB( 4'd5),                       // 4 bits
-    //     .i_Mem(6'd7),                       // 6 bits
-    //     .i_Ex (3'd9) ,                      // 3 bits
-    //     .i_chg_flag(1'b0),                  // 1 bit
-    //     .i_pc(pc),                          // 32 bits
-    //     .i_Rdst(instruction[24:22]),        // 3 bits
-    //     .i_Rsrc2(instruction[21:19]),       // 3 bits 
-    //     .i_Rsrc1(instruction[18:16]),       // 3 bits 
-    //     .i_immd(instruction[15:0]),         // 16 bits
-    //     .i_read_data1(readData1),           // 16 bits 
-    //     .i_read_data2(readData2),           // 16 bits
-    // // ---------------------   output ---------------//
-    //     .o_WB(o_decBuf_Wb),                     // 4 bits
-    //     .o_Mem(o_decBuf_Mem),                   // 6 bits
-    //     .o_Ex(o_decBuf_Ex) ,                    // 3 bits
-    //     .o_chg_flag(o_decBuf_chgFlag),          // 1 bit
-    //     .o_pc(o_decBuf_pc)   ,                  // 1 bit
-    //     .o_Rsrc1(o_decBuf_Rsrc1) ,              // 3 bits 
-    //     .o_Rsrc2(o_decBuf_Rsrc2) ,              // 3 bits
-    //     .o_Rdst(o_decBuf_Rdst),                 // 3 bits
-    //     .o_immd(o_decBuf_immd) ,                // 16 bits
-    //     .o_read_data1(o_decBuf_ReadData1),      // 16 bits
-    //     .o_read_data2(o_decBuf_ReadData2)       // 16 bits
-    // );
+    wire [3:0] o_decBuf_Wb;
+    wire [5:0] o_decBuf_Mem;
+    wire [2:0] o_decBuf_Ex;
+    wire  o_decBuf_chgFlag;
+    wire [31:0] o_decBuf_pc;
+    wire [2:0] o_decBuf_Rsrc1, o_decBuf_Rsrc2, o_decBuf_Rdst;
+    wire [15:0] o_decBuf_immd, o_decBuf_ReadData1, o_decBuf_ReadData2;
+    dec_alu_buf dec_alu_bufObj 
+    (
+    // input rst,
+        .clk(clk),
+        .enable(1'b1),
+        .i_WB( 4'd5),                       // 4 bits
+        .i_Mem(6'd7),                       // 6 bits
+        .i_Ex (3'd9) ,                      // 3 bits
+        .i_chg_flag(1'b0),                  // 1 bit
+        .i_pc(pc),                          // 32 bits
+        .i_Rdst(instruction[24:22]),        // 3 bits
+        .i_Rsrc2(instruction[21:19]),       // 3 bits 
+        .i_Rsrc1(instruction[18:16]),       // 3 bits 
+        .i_immd(instruction[15:0]),         // 16 bits
+        .i_read_data1(readData1),           // 16 bits 
+        .i_read_data2(readData2),           // 16 bits
+    // ---------------------   output ---------------//
+        .o_WB(o_decBuf_Wb),                     // 4 bits
+        .o_Mem(o_decBuf_Mem),                   // 6 bits
+        .o_Ex(o_decBuf_Ex) ,                    // 3 bits
+        .o_chg_flag(o_decBuf_chgFlag),          // 1 bit
+        .o_pc(o_decBuf_pc)   ,                  // 1 bit
+        .o_Rsrc1(o_decBuf_Rsrc1) ,              // 3 bits 
+        .o_Rsrc2(o_decBuf_Rsrc2) ,              // 3 bits
+        .o_Rdst(o_decBuf_Rdst),                 // 3 bits
+        .o_immd(o_decBuf_immd) ,                // 16 bits
+        .o_read_data1(o_decBuf_ReadData1),      // 16 bits
+        .o_read_data2(o_decBuf_ReadData2)       // 16 bits
+    );
 
 
 // -------------------------------------------------------- Execute Stage --------------------------------------
-        execute ExcecuteObj(
-            .clk(clk),             // 1  bit
-            .data1(),           // 1  bit
-            .data2(),           // 1  bit
-            .imm(),             // 1  bit
-            .flag_src(),        // 1  bit
-            .ALUsrc1(),         // 2  bit
-            .ALUsrc2(),         // 2  bit
-            .ALUoperation(),    // 3  bit
-            .data1_val(),       // 16 bit
-            .data2_val(),       // 16 bit
-            .imm_val(),         // 16 bit
-            .ALU_out()          // 16 bit
-        );
+        // execute ExcecuteObj(
+        //     .clk(clk),             // 1  bit
+        //     .data1(),           // 1  bit
+        //     .data2(),           // 1  bit
+        //     .imm(),             // 1  bit
+        //     .flag_src(),        // 1  bit
+        //     .ALUsrc1(),         // 2  bit
+        //     .ALUsrc2(),         // 2  bit
+        //     .ALUoperation(),    // 3  bit
+        //     .data1_val(),       // 16 bit
+        //     .data2_val(),       // 16 bit
+        //     .imm_val(),         // 16 bit
+        //     .ALU_out()          // 16 bit
+        // );
 
-            alu_mem_buff alu_mem_buffObj(
-            // input rst,
-            .clk(clk),
-            .enable(1'b1),
-            .i_Mem( ),           //6   bits
-            .i_WB(),            //4   bits
-            .i_pc()  ,          //32  bits
-            .i_Rdst(),          //3   bits
-            .i_alu() ,          //16  bits
-            .i_read_data1() ,   //16  bits
-            .i_flag() ,         //4   bits
+        //     alu_mem_buff alu_mem_buffObj(
+        //     // input rst,
+        //     .clk(clk),
+        //     .enable(1'b1),
+        //     .i_Mem( ),           //6   bits
+        //     .i_WB(),            //4   bits
+        //     .i_pc()  ,          //32  bits
+        //     .i_Rdst(),          //3   bits
+        //     .i_alu() ,          //16  bits
+        //     .i_read_data1() ,   //16  bits
+        //     .i_flag() ,         //4   bits
 
-            .o_Mem(),              //6  bits
-            .o_WB(),               //4  bits
-            .o_pc(),               //32 bits
-            .o_Rdst(),             //3  bits
-            .o_alu() ,             //16 bits
-            .o_read_data1(),       //16 bits
-            .o_flag()              //4  bits
-        );
+        //     .o_Mem(),              //6  bits
+        //     .o_WB(),               //4  bits
+        //     .o_pc(),               //32 bits
+        //     .o_Rdst(),             //3  bits
+        //     .o_alu() ,             //16 bits
+        //     .o_read_data1(),       //16 bits
+        //     .o_flag()              //4  bits
+        // );
 // -------------------------------------------------------- Memory Stage --------------------------------------
+
 //     wire [3:0]  o_MemoryStage_Wb;
 //     wire [15:0] o_MemoryStage_alu;
 //     wire [31:0] o_MemoryStage_MemData; 
@@ -168,7 +169,17 @@ module processor(
 //     .o_alu(o_MemBuf_alu),               // 16 bit
 //     .o_Rdst(o_MemBuf_Rdst)               // 3 bit
 // );
+
+
 // ----------------------- WriteBack Stage --------------------------------------
 
+// wire [15:0] writeBackData;
+// writeBack writeBackObj(
+//     .sel(),
+//     .memData(o_MemBuf_MemData),       // 32bit
+//     .aluData(o_MemBuf_alu),       // 16bit
+
+//     .writeBackData(writeBackData)    // 16 bit
+// );
 
 endmodule
