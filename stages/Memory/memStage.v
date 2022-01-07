@@ -1,7 +1,3 @@
-// for buffers
-// input  enableMemBuffer,
-// input [2:0]i_Rdst,
-// output [2 :0] o_Rdst,
 module memStage(
     input  clk , 
     input  i_isStack, i_reset, i_isPushPc,
@@ -50,18 +46,4 @@ module memStage(
         .o_data_out(o_memData)
     );
     assign o_aluData = i_aluData ; 
-    //  Mem_WB_buff memWbBuffer(
-    // // input rst, 
-    //     .clk(clk),.enable(enableMemBuffer),
-    //     .i_WB(wb),
-    //     .i_Mem(memDataWire),
-    //     .i_alu(i_aluData),
-    //     .i_Rdst(i_Rdst), 
-    //     .o_WB(o_wb),
-    //     .o_Mem(o_memData),
-    //     .o_alu(o_aluData),
-    //     .o_Rdst(o_Rdst) 
-    // );
-    // assign o_Rdst    = i_Rdst ; 
-    // assign o_hazardUnit = address;
 endmodule
