@@ -28,6 +28,9 @@ module CTRL_UNIT(
                         7'b0001001 :    signals = 23'b01110111000000101100011; //SUB
                         7'b0001101 :    signals = 23'b01110111000000111100011; //AND
                         7'b0100000 :    signals = 23'b10110111100000001100011; //IADD
+                        //memory operations
+                        7'b0110101 :    signals = 23'b10110111100001101100011; //LDM
+                        7'b0100010 :    signals = 23'b10110111100000001110011; //LDD
                 endcase 
         end // ctrl_unit_op
 endmodule // CTRL_UNIT
