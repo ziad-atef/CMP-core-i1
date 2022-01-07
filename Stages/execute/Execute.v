@@ -59,7 +59,7 @@ module execute(
             default : ALU_input1 = data1_mux;            
         endcase
         case(ALUsrc2)
-            2'b00: ALU_input2 = data2_mux;
+            2'b00: ALU_input2 = imm_mux;
             2'b01 : ALU_input2 = prev_ALU;
             2'b10: ALU_input2 = prev_mem;
             default : ALU_input2 = data2_mux;            

@@ -58,8 +58,8 @@ wire [15:0] writeBackData;
         .clk(clk),                                                               // 1  bits
         .rst(rst),                                                               // 1  bits
         .regWrite(o_MemBuf_Wb[1]),                                               // 1  bits 
-        .Rsrc1(instruction[18:16]),                                              // 3  bits
-        .Rsrc2(instruction[21:19]),                                              // 3  bits
+        .Rsrc1(instruction[21:19]),                                              // 3  bits
+        .Rsrc2(instruction[18:16]),                                              // 3  bits
         .Rdst(o_MemBuf_Rdst),                                                    // 3  bits
         .opcode(instruction[31:25]),                                             // 7  bits 
         .writeData(writeBackData),                                               // 16 bits
@@ -80,8 +80,8 @@ wire [15:0] writeBackData;
         .i_chg_flag(1'b0),                  // 1 bit
         .i_pc(pc),                          // 32 bits
         .i_Rdst(instruction[24:22]),        // 3 bits
-        .i_Rsrc2(instruction[21:19]),       // 3 bits 
-        .i_Rsrc1(instruction[18:16]),       // 3 bits 
+        .i_Rsrc1(instruction[21:19]),       // 3 bits 
+        .i_Rsrc2(instruction[18:16]),       // 3 bits 
         .i_immd(instruction[15:0]),         // 16 bits
         .i_read_data1(readData1),           // 16 bits 
         .i_read_data2(readData2),           // 16 bits

@@ -11,7 +11,7 @@ module CTRL_UNIT(
         output reg [22:0]signals;
 
 
-        always @(posedge clk)
+        always @(*)
         begin: ctrl_unit_op
                 case (opcode)  
                         //one operand
