@@ -38,18 +38,18 @@ wire [31:0] pc , instruction;
     reg regWrite ;
     reg [15:0] writeData;
     decode decodeObj(
-        .clk(clk),                           // 1  bits
-        .rst(rst),                           // 1  bits
-        .regWrite(regWrite),                 // 1  bits 
-        .Rsrc1(instruction[18:16]),          // 3  bits
-        .Rsrc2(instruction[21:19]),          // 3  bits
-        .Rdst(instruction[24:22]),           // 3  bits
-        .opcode(instruction[31:25]),         // 7  bits 
-        .writeData(writeData),               // 16 bits
-        .inPort(16'b0),                      // 16 bits      
-        .signals({pc_select}),               // 23 bits
-        .readData1(readData1),               // 16 bits
-        .readData2(readData2)                // 16 bits
+        .clk(clk),                                                               // 1  bits
+        .rst(rst),                                                               // 1  bits
+        .regWrite(o_MemBuf_Wb[1]),                                               // 1  bits 
+        .Rsrc1(instruction[18:16]),                                              // 3  bits
+        .Rsrc2(instruction[21:19]),                                              // 3  bits
+        .Rdst(o_MemBuf_Rdst),                                                    // 3  bits
+        .opcode(instruction[31:25]),                                             // 7  bits 
+        .writeData(writeBackData),                                               // 16 bits
+        .inPort(16'b0),                                                          // 16 bits      
+        .signals(signals),                                                       // 23 bits
+        .readData1(readData1),                                                   // 16 bits
+        .readData2(readData2)                                                    // 16 bits
     );
 
     wire [3:0] o_decBuf_Wb;
@@ -88,7 +88,6 @@ wire [31:0] pc , instruction;
         .o_read_data1(o_decBuf_ReadData1),      // 16 bits
         .o_read_data2(o_decBuf_ReadData2)       // 16 bits
     );
-
 
 // -------------------------------------------------------- Execute Stage --------------------------------------
         // execute ExcecuteObj(
