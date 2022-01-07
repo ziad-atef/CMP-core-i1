@@ -10,7 +10,9 @@ module execute(
     data1_val,
     data2_val,
     imm_val,
-    ALU_out
+    input_flags,
+    ALU_out,
+    output_flags
 );
     input clk;
     input flag_src;
@@ -20,13 +22,16 @@ module execute(
     input [1:0]ALUsrc1;
     input [1:0]ALUsrc2;
     input [2:0]ALUoperation;
+    input [3:0]input_flags;
     input [15:0] imm_val;
     input [15:0] data1_val;
     input [15:0] data2_val;
+    
     output [15:0] ALU_out;
+    output [3:0] output_flags;
+
 
     wire [15:0]data1_mux,data2_mux,imm_mux;
-    output [3:0] flags;
 
     assign data1_mux = (data1)?data1_val:data2_val;
     assign data2_mux = (data2)?data2_val:1;

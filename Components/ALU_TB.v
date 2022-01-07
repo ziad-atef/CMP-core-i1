@@ -61,7 +61,6 @@ initial begin
 
 
 
-    #10
 
 end
 endmodule //ALU_TB
