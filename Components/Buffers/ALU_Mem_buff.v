@@ -13,14 +13,14 @@ module alu_mem_buff
     input [15:0] i_alu , i_read_data1 ,
     input [flagSize-1:0] i_flag ,
 
-    output [MemSize-1:0] o_Mem,
-    output [WbSize-1 :0] o_WB, 
-    output [31:0] o_pc  ,
-    output [2:0 ] o_Rdst,
-    output [15:0] o_alu , o_read_data1,
-    output [flagSize-1:0] o_flag  
+    output reg [MemSize-1:0] o_Mem,
+    output reg [WbSize-1 :0] o_WB, 
+    output reg [31:0] o_pc  ,
+    output reg [2:0 ] o_Rdst,
+    output reg [15:0] o_alu , o_read_data1,
+    output reg [flagSize-1:0] o_flag  
 );
-    always @(posedge clk) begin
+    always @(negedge clk) begin
         // if(rst == 1'b1) begin
         //     o_WB <=        0;
         //     o_Mem <=       0;
@@ -29,7 +29,7 @@ module alu_mem_buff
         //     o_Rdst<=       0;
         //     o_alu<=        0;
         // end
-        else if(enable == 1'b1) begin
+        if(enable == 1'b1) begin
             o_WB <=        i_WB;
             o_Mem <=       i_Mem;
             o_pc<=         i_pc;
