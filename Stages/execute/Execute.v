@@ -46,7 +46,7 @@ module execute(
     assign data1_mux = (data1)?data1_val:data2_val;
     assign data2_mux = (data2)?data2_val:1;
     assign imm_mux = (imm)?imm_val:data2_mux;
-    assign output_flags = (flag_src)?mem_flags:ALU_output_flags;
+    assign output_flags = (flag_src)?ALU_output_flags:mem_flags;
 
 
     ALU u0(.operand1(ALU_input1), .operand2(ALU_input2), .operation(ALUoperation), .flags_in(input_flags), .result(ALU_out), .flags_out(ALU_output_flags));
