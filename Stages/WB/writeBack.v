@@ -3,7 +3,7 @@ module writeBack(
     input [31:0] memData,
     input [15:0] aluData,
 
-    output reg [15:0] writeBackData
+    output [15:0] writeBackData
 );
     always @(*) begin
         if (sel) 

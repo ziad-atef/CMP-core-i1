@@ -1,6 +1,6 @@
 module Mem_WB_buff     
     #( parameter    
-        WbSize  = 2
+        WbSize  = 4
     )(
     // input rst, 
     input  clk,enable,

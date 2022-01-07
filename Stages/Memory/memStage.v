@@ -2,12 +2,12 @@ module memStage(
     input  clk , 
     input  i_isStack, i_reset, i_isPushPc,
     input  i_memRead, i_memWrite, i_en32,
-    input  [1:0]  i_wb, 
+    input  [3:0]  i_wb, 
     input  [15:0] i_aluData,
     input  [31:0] i_stackData, i_pc,  
     input  [31:0] i_instruction,   // refers to instruction come from buffer (name as x in pdf)
 
-    output reg [1 :0] o_wb ,
+    output reg [3 :0] o_wb ,
     output [15:0] o_aluData ,
     output [31:0] o_memData 
     // output  reg [19:0] o_hazardUnit
