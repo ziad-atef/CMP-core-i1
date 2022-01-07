@@ -108,6 +108,7 @@ wire [15:0] writeBackData;
     wire [15:0] o_aluBuffer_ReadData1;
     wire [15:0] o_aluBuffer_alu;
     wire [15:0] tmpAlu_Out;
+    wire [3:0]  tmpFlags;
 
     execute ExcecuteObj(
         .clk(clk),             // 1  bit
@@ -121,8 +122,13 @@ wire [15:0] writeBackData;
         .data1_val(o_decBuf_ReadData1),       // 16 bit
         .data2_val(o_decBuf_ReadData2),       // 16 bit
         .imm_val(o_decBuf_immd),         // 16 bit
-        .ALU_out(tmpAlu_Out)          // 16 bit
-
+        .ALU_out(tmpAlu_Out),          // 16 bit
+        /////////////////////////////////////////////////////
+        .mem_flags(o_MemBuf_MemData[31:28]),
+        .input_flags(o_aluBuffer_flags), 
+        .prev_ALU(o_aluBuffer_alu),
+        .prev_mem(o_MemBuf_MemData[15:0]),
+        .output_flags(tmpFlags)  
     );
     alu_mem_buff alu_mem_buffObj(
         // input rst,
@@ -134,7 +140,7 @@ wire [15:0] writeBackData;
         .i_Rdst(o_decBuf_Rdst),                 //3   bits
         .i_alu(tmpAlu_Out) ,                              //16  bits
         .i_read_data1(o_decBuf_ReadData1) ,     //16  bits
-        .i_flag(4'd0) ,                             //4   bits
+        .i_flag(tmpFlags) ,                             //4   bits
 
         .o_Mem(o_aluBuffer_Mem),                   //6  bits
         .o_WB(o_aluBuffer_Wb),                     //4  bits
