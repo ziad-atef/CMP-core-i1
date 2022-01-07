@@ -59,8 +59,5 @@ initial begin
     operation = 3'b010;
     flags_in  = flags_out;
 
-
-
-
 end
 endmodule //ALU_TB
