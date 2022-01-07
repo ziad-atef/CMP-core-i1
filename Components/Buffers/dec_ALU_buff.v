@@ -1,8 +1,8 @@
 module dec_alu_buf 
     #( parameter    
-        WbSize  = 4,
+        WbSize  = 2,
         MemSize = 6,
-        ExSize  = 3
+        ExSize  = 11
     )
     (
     // input rst,
