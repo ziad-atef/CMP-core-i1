@@ -116,14 +116,14 @@ wire [15:0] writeBackData;
     wire [3:0]  tmpFlags;
 
     wire [1:0] Alu_Src1, Alu_Src2;
-
+    wire HDU_to_CU ;
     execute ExcecuteObj(
         .clk(clk),                                      // 1  bit
         .data1(o_decBuf_Ex[10]),                        // 1  bit
         .data2(o_decBuf_Ex[9]),                         // 1  bit
         .imm(o_decBuf_Ex[8]),                           // 1  bit
-        .ALUsrc1(Alu_Src1),                     // 2  bit
-        .ALUsrc2(Alu_Src2),                     // 2  bit
+        .ALUsrc1(Alu_Src1),                             // 2  bit
+        .ALUsrc2(Alu_Src2),                             // 2  bit
         .ALUoperation(o_decBuf_Ex[3:1]),                // 3  bit
         .flag_src(o_decBuf_Ex[0]),                      // 1  bit
         .data1_val(o_decBuf_ReadData1),                 // 16 bit
@@ -135,7 +135,8 @@ wire [15:0] writeBackData;
         .input_flags(o_aluBuffer_flags), 
         .prev_ALU(o_aluBuffer_alu),
         .prev_mem(o_MemBuf_MemData[15:0]),
-        .output_flags(tmpFlags)  
+        .output_flags(tmpFlags),
+        .to_control_unit(HDU_to_CU)  
     );
     alu_mem_buff alu_mem_buffObj(
         .rst(signals[29]),
