@@ -115,13 +115,15 @@ wire [15:0] writeBackData;
     wire [15:0] tmpAlu_Out;
     wire [3:0]  tmpFlags;
 
+    wire [1:0] Alu_Src1, Alu_Src2;
+
     execute ExcecuteObj(
         .clk(clk),                                      // 1  bit
         .data1(o_decBuf_Ex[10]),                        // 1  bit
         .data2(o_decBuf_Ex[9]),                         // 1  bit
         .imm(o_decBuf_Ex[8]),                           // 1  bit
-        .ALUsrc1(o_decBuf_Ex[7:6]),                     // 2  bit
-        .ALUsrc2(o_decBuf_Ex[5:4]),                     // 2  bit
+        .ALUsrc1(Alu_Src1),                     // 2  bit
+        .ALUsrc2(Alu_Src2),                     // 2  bit
         .ALUoperation(o_decBuf_Ex[3:1]),                // 3  bit
         .flag_src(o_decBuf_Ex[0]),                      // 1  bit
         .data1_val(o_decBuf_ReadData1),                 // 16 bit
@@ -162,6 +164,7 @@ wire [15:0] writeBackData;
     wire [31:0] o_MemoryStage_MemData; 
     wire [31:0] o_MemoryStage_NewStack;
     wire [31:0] o_MemBuf_oldStack;
+    wire changeEPC;
     memStage MemStageObj(
         .clk(clk) ,                // 1 bit
         .i_reset(signals[30]),            // 1 bit
@@ -177,7 +180,7 @@ wire [15:0] writeBackData;
         .prev_SP(o_MemBuf_oldStack),
         .SP_select(o_aluBuffer_Mem[5:3]),
         .is_Prev_SP(o_aluBuffer_Mem[6]),
-
+        .changeEPC(changeEPC),
         .o_wb(o_MemoryStage_Wb) ,              // 4 bit
         .o_aluData(o_MemoryStage_alu) ,         // 16 bit
         .o_memData(o_MemoryStage_MemData),           // 32 bit
@@ -210,6 +213,19 @@ writeBack writeBackObj(
     .aluData(o_MemBuf_alu),       // 16bit
 
     .writeBackData(writeBackData)    // 16 bit
+);
+
+
+// ----------------------- Forwarding Unit ----------------------------------------
+FORWARDING_UNIT forwardingUnitObj(
+.Rsrc1(o_decBuf_Rsrc1),
+.Rsrc2(o_decBuf_Rsrc2),
+.Rdst_mem(o_aluBuffer_Rdst),
+.Rdst_wb(o_MemBuf_Rdst),
+.WB_mem(o_aluBuffer_Wb[1]),
+.WB_wb(o_MemBuf_Wb[1]),
+.exec_sel1(Alu_Src1),
+.exec_sel2(Alu_Src2)
 );
 
 //////////////////////////////////////////
