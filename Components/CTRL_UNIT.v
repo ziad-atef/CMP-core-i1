@@ -30,7 +30,7 @@ module CTRL_UNIT(
                         7'b0100000 :    signals = 24'b010110111100000001100011; //IADD
                         //memory operations
                         7'b0110101 :    signals = 24'b010110111100001101100011; //LDM
-                        7'b0100010 :    signals = 24'b10110111100000001110010;  //LDD
+                        7'b0100010 :    signals = 24'b010110111100000001110010;  //LDD
                 endcase 
         end // ctrl_unit_op
 endmodule // CTRL_UNIT
