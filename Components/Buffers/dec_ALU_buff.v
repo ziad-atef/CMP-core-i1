@@ -15,6 +15,7 @@ module dec_alu_buf
     input [31:0] i_pc,
     input [2: 0] i_Rsrc1 , i_Rsrc2 , i_Rdst,
     input [15:0] i_immd, i_read_data1, i_read_data2,
+    input i_output_write ,
 
     output reg [WbSize -1 :0] o_WB, 
     output reg [MemSize-1 :0] o_Mem, 
@@ -22,7 +23,8 @@ module dec_alu_buf
     output reg o_chg_flag,
     output reg [31:0] o_pc   ,
     output reg [2:0]  o_Rsrc1 , o_Rsrc2 , o_Rdst,
-    output reg [15:0] o_immd , o_read_data1, o_read_data2
+    output reg [15:0] o_immd , o_read_data1, o_read_data2,
+    output reg o_output_write 
 );
     always @(negedge clk) begin
         // if(rst == 1'b1) begin
@@ -50,6 +52,7 @@ module dec_alu_buf
             o_Rsrc2<=       i_Rsrc2;
             o_Rdst<=        i_Rdst;
             o_immd<=        i_immd;
+            o_output_write <= i_output_write ;
         end
     end
 endmodule

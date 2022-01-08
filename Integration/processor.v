@@ -4,6 +4,8 @@ module processor(
     output [15:0] out
 );
 
+
+
 wire fetchEnableBuf,  Rdst;
 wire [1:0] pc_select;
 wire [15:0] readData1,readData2;
@@ -17,7 +19,7 @@ wire [15:0] writeBackData;
 // -------------------------------------------------------- Fetch Stage --------------------------------------
     wire [31:0] tmpPc, tmpInstruction;
     reg [3:0] pcPlace;
-    wire [22:0] signals;
+    wire [23:0] signals;
 
     fetch fetchObj(
         .clk(clk),                                                              //1  bits
@@ -52,7 +54,7 @@ wire [15:0] writeBackData;
     wire [31:0] o_decBuf_pc;
     wire [2:0] o_decBuf_Rsrc1, o_decBuf_Rsrc2, o_decBuf_Rdst;
     wire [15:0] o_decBuf_immd, o_decBuf_ReadData1, o_decBuf_ReadData2;
-
+    wire o_decBuf_outputWrite ;
 
     decode decodeObj(
         .clk(clk),                                                               // 1  bits
@@ -68,6 +70,7 @@ wire [15:0] writeBackData;
         .readData1(readData1),                                                   // 16 bits
         .readData2(readData2)                                                    // 16 bits
     );
+
 
     dec_alu_buf dec_alu_bufObj 
     (
@@ -85,6 +88,7 @@ wire [15:0] writeBackData;
         .i_immd(instruction[15:0]),         // 16 bits
         .i_read_data1(readData1),           // 16 bits 
         .i_read_data2(readData2),           // 16 bits
+        .i_output_write(signals[23]),
     // ---------------------   output ---------------//
         .o_WB(o_decBuf_Wb),                     // 2 bits
         .o_Mem(o_decBuf_Mem),                   // 6 bits
@@ -96,7 +100,8 @@ wire [15:0] writeBackData;
         .o_Rdst(o_decBuf_Rdst),                 // 3 bits
         .o_immd(o_decBuf_immd) ,                // 16 bits
         .o_read_data1(o_decBuf_ReadData1),      // 16 bits
-        .o_read_data2(o_decBuf_ReadData2)       // 16 bits
+        .o_read_data2(o_decBuf_ReadData2),      // 16 bits
+        .o_output_write(o_decBuf_outputWrite)
     );
 
 // -------------------------------------------------------- Execute Stage --------------------------------------
@@ -202,5 +207,24 @@ writeBack writeBackObj(
 
     .writeBackData(writeBackData)    // 16 bit
 );
+
+//////////////////////////////////////////
+//////////////////////////////////////////
+//////////////////////////////////////////
+//////////////////////////////////////////
+
+
+reg [15:0] output_temp = 0;
+assign out = output_temp;
+
+always @(*) begin
+    if (o_decBuf_outputWrite)
+        output_temp = tmpAlu_Out;
+end
+
+//////////////////////////////////////////
+//////////////////////////////////////////
+//////////////////////////////////////////
+//////////////////////////////////////////
 
 endmodule
