@@ -9,11 +9,13 @@ module Mem_WB_buff
     input  [31:0] i_MemData ,
     input  [15:0] i_alu,
     input  [2:0 ] i_Rdst, 
+    input [31:0] i_SP,
 
     output reg [WbSize-1 :0 ] o_WB,
     output reg [31:0] o_MemData ,
     output reg [15:0] o_alu,
-    output reg [ 2:0] o_Rdst 
+    output reg [ 2:0] o_Rdst ,
+    output reg  [31:0] o_SP
 );
     always @(negedge clk) begin
         // if(rst == 1'b1) begin
@@ -28,6 +30,7 @@ module Mem_WB_buff
             o_MemData  <=  i_MemData;
             o_alu      <=  i_alu;
             o_Rdst     <=  i_Rdst;
+            o_SP       <= i_SP;
         end
     end
 endmodule

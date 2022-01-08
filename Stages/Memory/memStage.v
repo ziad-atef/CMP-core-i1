@@ -4,23 +4,29 @@ module memStage(
     input  i_memRead, i_memWrite, i_en32,
     input  [1:0]  i_wb, 
     input  [15:0] i_aluData,
-    input  [31:0] i_stackData, i_pc,  
+    input  [31:0] i_pc,  
     input  [31:0] i_instruction,   // refers to instruction come from buffer (name as x in pdf)
+    input  [31:0] prev_SP,
+    input  [2:0] SP_select,
+    input  is_Prev_SP,
 
     output reg [1 :0] o_wb ,
     output [15:0] o_aluData ,
     output [31:0] o_memData 
     // output  reg [19:0] o_hazardUnit
 );
-    reg  [19:0]  address;
+    reg  [31:0]  address;
     reg  [31:0]  writeData;
+    reg  [31:0]  SP_out;
     // always @(posedge clk) begin
+    STACK_POINTER SP (.clk(clk) , .Control_Mux(SP_select) , .Rst(i_reset),.Output_Signal(SP_out));
+
     always @(*) begin
         if(i_isStack) begin
-            address =i_stackData[19:0];
+            address = (is_Prev_SP) ? prev_SP : SP_out;
         end
         else begin
-            address ={4'b0,i_aluData};
+            address ={16'b0,i_aluData};
         end
         // o_hazardUnit = address;
         if(i_isPushPc) begin

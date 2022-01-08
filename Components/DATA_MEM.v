@@ -38,7 +38,7 @@ input clk;
 input i_memRead;
 input i_memWrite;
 input i_en32;   
-input [19:0] i_address;
+input [31:0] i_address;
 input [31:0] i_data_in; 
 output reg [31:0] o_data_out;
 
