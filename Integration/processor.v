@@ -49,7 +49,7 @@ wire [15:0] writeBackData;
 
     wire [1:0] o_decBuf_Wb;
     wire [7:0] o_decBuf_Mem;
-    wire [10:0] o_decBuf_Ex;
+    wire [13:0] o_decBuf_Ex;
     wire  o_decBuf_chgFlag ;
     wire [31:0] o_decBuf_pc;
     wire [2:0] o_decBuf_Rsrc1, o_decBuf_Rsrc2, o_decBuf_Rdst;
@@ -79,7 +79,7 @@ wire [15:0] writeBackData;
         .enable(1'b1),
         .i_WB( {signals[19], signals[0]}),  // 2 bits
         .i_Mem({signals[36:32],signals[4:2]}),               // 3 bits
-        .i_Ex (signals[16:6]) ,             // 10 bits
+        .i_Ex ({signals[39:37],signals[16:6]}) ,             // 13 bits
         .i_chg_flag(1'b0),                  // 1 bit
         .i_pc(pc),                          // 32 bits
         .i_Rdst(instruction[24:22]),        // 3 bits
@@ -91,8 +91,8 @@ wire [15:0] writeBackData;
         .i_output_write(signals[23]),
     // ---------------------   output ---------------//
         .o_WB(o_decBuf_Wb),                     // 2 bits
-        .o_Mem(o_decBuf_Mem),                   // 6 bits
-        .o_Ex(o_decBuf_Ex) ,                    // 3 bits
+        .o_Mem(o_decBuf_Mem),                   // 8 bits
+        .o_Ex(o_decBuf_Ex) ,                    // 14 bits
         .o_chg_flag(o_decBuf_chgFlag),          // 1 bit
         .o_pc(o_decBuf_pc)   ,                  // 1 bit
         .o_Rsrc1(o_decBuf_Rsrc1) ,              // 3 bits 
@@ -128,7 +128,7 @@ wire [15:0] writeBackData;
         .data2_val(o_decBuf_ReadData2),                 // 16 bit
         .imm_val(o_decBuf_immd),                        // 16 bit
         .ALU_out(tmpAlu_Out),                           // 16 bit
-
+        .in_control_hazards(o_decBuf_Ex[13:11]),
         .mem_flags(o_MemBuf_MemData[31:28]),
         .input_flags(o_aluBuffer_flags), 
         .prev_ALU(o_aluBuffer_alu),

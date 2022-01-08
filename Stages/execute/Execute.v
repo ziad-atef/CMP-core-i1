@@ -14,8 +14,10 @@ module execute(
     data2_val,
     prev_ALU,
     prev_mem,
+    in_control_hazards,
     ALU_out,
-    output_flags
+    output_flags,
+    to_control_unit
 );
     input clk;
     input flag_src;
@@ -32,9 +34,11 @@ module execute(
     input [15:0] data2_val;
     input [15:0] prev_ALU;
     input [15:0] prev_mem;
+    input [2:0] in_control_hazards ;
 
     output [15:0] ALU_out;
     output [3:0] output_flags;
+    output to_control_unit ; 
 
 
     wire  [3:0] ALU_output_flags; 
@@ -50,7 +54,7 @@ module execute(
 
 
     ALU u0(.operand1(ALU_input1), .operand2(ALU_input2), .operation(ALUoperation), .flags_in(input_flags), .result(ALU_out), .flags_out(ALU_output_flags));
-    
+    HDU_CONTROL_HAZARDS h(.i_EX(in_control_hazards), .i_flags(output_flags), .o_control_unit(to_control_unit));
     always @(*) begin
         case(ALUsrc1)
             2'b00: ALU_input1 = data1_mux;
