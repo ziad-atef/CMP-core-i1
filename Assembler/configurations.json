@@ -1,6 +1,6 @@
 {
-    "input_path" : "code.txt",
-    "output_path" : "output.mem",
+    "input_path" : "TwoOperand.asm",
+    "output_path" : "TwoOperand.mem",
     "mode" : "memory",
     "instance" : "/ram/ram"
 }
