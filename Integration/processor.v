@@ -19,7 +19,7 @@ wire [15:0] writeBackData;
 // -------------------------------------------------------- Fetch Stage --------------------------------------
     wire [31:0] tmpPc, tmpInstruction;
     reg [3:0] pcPlace;
-    wire [34:0] signals;
+    wire [39:0] signals;
 
     fetch fetchObj(
         .clk(clk),                                                              //1  bits
@@ -48,7 +48,7 @@ wire [15:0] writeBackData;
     reg [15:0] writeData;
 
     wire [1:0] o_decBuf_Wb;
-    wire [5:0] o_decBuf_Mem;
+    wire [7:0] o_decBuf_Mem;
     wire [10:0] o_decBuf_Ex;
     wire  o_decBuf_chgFlag ;
     wire [31:0] o_decBuf_pc;
@@ -78,7 +78,7 @@ wire [15:0] writeBackData;
         .clk(clk),
         .enable(1'b1),
         .i_WB( {signals[19], signals[0]}),  // 2 bits
-        .i_Mem(signals[4:2]),               // 3 bits
+        .i_Mem({signals[36:32],signals[4:2]}),               // 3 bits
         .i_Ex (signals[16:6]) ,             // 10 bits
         .i_chg_flag(1'b0),                  // 1 bit
         .i_pc(pc),                          // 32 bits
@@ -107,7 +107,7 @@ wire [15:0] writeBackData;
 // -------------------------------------------------------- Execute Stage --------------------------------------
     wire [1:0]  o_aluBuffer_Wb;
     wire [3:0]  o_aluBuffer_flags;
-    wire [5:0]  o_aluBuffer_Mem;
+    wire [7:0]  o_aluBuffer_Mem;
     wire [31:0] o_aluBuffer_pc;
     wire [2:0]  o_aluBuffer_Rdst;
     wire [15:0] o_aluBuffer_ReadData1;
@@ -136,50 +136,52 @@ wire [15:0] writeBackData;
         .output_flags(tmpFlags)  
     );
     alu_mem_buff alu_mem_buffObj(
-        // input rst,
+        .rst(signals[29]),
         .clk(clk),
         .enable(1'b1),
         .i_Mem(o_decBuf_Mem),                   //6   bits
         .i_WB(o_decBuf_Wb),                     //4   bits
         .i_pc(o_decBuf_pc)  ,                   //32  bits
         .i_Rdst(o_decBuf_Rdst),                 //3   bits
-        .i_alu(tmpAlu_Out) ,                              //16  bits
-        .i_read_data1(o_decBuf_ReadData1) ,             //16  bits
-        .i_flag(tmpFlags) ,                             //4   bits
+        .i_alu(tmpAlu_Out) ,                    //16  bits
+        .i_read_data1(o_decBuf_ReadData1) ,     //16  bits
+        .i_flag(tmpFlags) ,                     //4   bits
 
-        .o_Mem(o_aluBuffer_Mem),                         //6  bits
-        .o_WB(o_aluBuffer_Wb),                           //4  bits
-        .o_pc(o_aluBuffer_pc),                            //32 bits
-        .o_Rdst(o_aluBuffer_Rdst),                        //3  bits
-        .o_alu(o_aluBuffer_alu) ,                              //16 bits
-        .o_read_data1(o_aluBuffer_ReadData1),      //16 bits
-        .o_flag(o_aluBuffer_flags)                               //4  bits
+        .o_Mem(o_aluBuffer_Mem),                //6  bits
+        .o_WB(o_aluBuffer_Wb),                  //4  bits
+        .o_pc(o_aluBuffer_pc),                  //32 bits
+        .o_Rdst(o_aluBuffer_Rdst),              //3  bits
+        .o_alu(o_aluBuffer_alu) ,               //16 bits
+        .o_read_data1(o_aluBuffer_ReadData1),   //16 bits
+        .o_flag(o_aluBuffer_flags)              //4  bits
     );
 // -------------------------------------------------------- Memory Stage --------------------------------------
 
     wire [3:0]  o_MemoryStage_Wb;
     wire [15:0] o_MemoryStage_alu;
     wire [31:0] o_MemoryStage_MemData; 
-
-
+    wire [31:0] o_MemoryStage_NewStack;
+    wire [31:0] o_MemBuf_oldStack;
     memStage MemStageObj(
         .clk(clk) ,                // 1 bit
-        .i_reset(1'b0),            // 1 bit
-        .i_isStack(1'b0),          // 1 bit
+        .i_reset(signals[30]),            // 1 bit
+        .i_isStack(o_aluBuffer_Mem[7]),          // 1 bit
         .i_isPushPc(1'b0),         // 1 bit
         .i_memRead(o_aluBuffer_Mem[2]),          // 1 bit
         .i_memWrite(o_aluBuffer_Mem[1]),         // 1 bit
         .i_en32(o_aluBuffer_Mem[0]),             // 1 bit
         .i_wb(o_aluBuffer_Wb),               // 4 bit
         .i_aluData(o_aluBuffer_alu),        // 16 bit
-        .i_stackData(32'd120),     // 32 bit
         .i_pc(o_aluBuffer_pc),             // 32 bit
         .i_instruction(o_aluBuffer_ReadData1),    // 32 bit
-
+        .prev_SP(o_MemBuf_oldStack),
+        .SP_select(o_aluBuffer_Mem[5:3]),
+        .is_Prev_SP(o_aluBuffer_Mem[6]),
 
         .o_wb(o_MemoryStage_Wb) ,              // 4 bit
         .o_aluData(o_MemoryStage_alu) ,         // 16 bit
-        .o_memData(o_MemoryStage_MemData)           // 32 bit
+        .o_memData(o_MemoryStage_MemData),           // 32 bit
+        .new_SP(o_MemoryStage_NewStack)
         // .o_hazardUnit()  // 20 bit
     );
 
@@ -190,11 +192,13 @@ wire [15:0] writeBackData;
     .i_MemData(o_MemoryStage_MemData) ,          // 32 bit
     .i_alu(o_MemoryStage_alu),               // 16 bit
     .i_Rdst(o_aluBuffer_Rdst),              // 3 bit
+    .i_SP(o_MemoryStage_NewStack),
 
     .o_WB(o_MemBuf_Wb),                // 2 bit
     .o_MemData(o_MemBuf_MemData) ,          // 32 bit
     .o_alu(o_MemBuf_alu),               // 16 bit
-    .o_Rdst(o_MemBuf_Rdst)               // 3 bit
+    .o_Rdst(o_MemBuf_Rdst),               // 3 bit
+    .o_SP(o_MemBuf_oldStack)
 );
 
 

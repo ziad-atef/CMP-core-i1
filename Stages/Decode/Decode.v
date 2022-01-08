@@ -21,7 +21,7 @@ module decode(
     input [6:0] opcode;
     input [15:0] writeData;
     input [15:0] inPort;
-    output [34:0] signals;
+    output [39:0] signals;
     output reg [15:0] readData1;
     output [15:0] readData2;
         

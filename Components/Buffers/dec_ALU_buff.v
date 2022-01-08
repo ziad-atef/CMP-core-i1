@@ -1,7 +1,7 @@
 module dec_alu_buf 
     #( parameter    
         WbSize  = 2,
-        MemSize = 6,
+        MemSize = 8,
         ExSize  = 11
     )
     (

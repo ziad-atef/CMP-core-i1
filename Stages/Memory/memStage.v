@@ -10,14 +10,17 @@ module memStage(
     input  [2:0] SP_select,
     input  is_Prev_SP,
 
-    output reg [1 :0] o_wb ,
-    output [15:0] o_aluData ,
-    output [31:0] o_memData 
+    output reg [1 :0] o_wb,
+    output [15:0] o_aluData,
+    output [31:0] o_memData,
+    output [31:0] new_SP
     // output  reg [19:0] o_hazardUnit
 );
     reg  [31:0]  address;
     reg  [31:0]  writeData;
-    reg  [31:0]  SP_out;
+    wire  [31:0]  SP_out;
+
+    assign new_SP = SP_out;
     // always @(posedge clk) begin
     STACK_POINTER SP (.clk(clk) , .Control_Mux(SP_select) , .Rst(i_reset),.Output_Signal(SP_out));
 
