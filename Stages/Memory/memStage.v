@@ -10,6 +10,7 @@ module memStage(
     input  [2:0] SP_select,
     input  is_Prev_SP,
 
+    output wire changeEPC,
     output reg [1 :0] o_wb,
     output [15:0] o_aluData,
     output [31:0] o_memData,
@@ -53,6 +54,12 @@ module memStage(
         .i_address(address),
         .i_data_in(writeData),
         .o_data_out(o_memData)
+    );
+
+    
+    HDU_EXCEPTIONS hduExceptions(
+        .i_address(writeData),
+        .o_changeEPC(changeEPC)
     );
     assign o_aluData = i_aluData ; 
 endmodule
