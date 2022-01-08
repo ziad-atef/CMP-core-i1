@@ -63,7 +63,7 @@ wire [15:0] writeBackData;
         .Rdst(o_MemBuf_Rdst),                                                    // 3  bits
         .opcode(instruction[31:25]),                                             // 7  bits 
         .writeData(writeBackData),                                               // 16 bits
-        .inPort(16'b0),                                                          // 16 bits      
+        .inPort(in),                                                          // 16 bits      
         .signals(signals),                                                       // 23 bits
         .readData1(readData1),                                                   // 16 bits
         .readData2(readData2)                                                    // 16 bits

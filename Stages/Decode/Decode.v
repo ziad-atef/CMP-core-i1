@@ -28,11 +28,12 @@ module decode(
     wire [15:0] regFileOut;
     CTRL_UNIT u0(.clk(clk),.opcode(opcode),.reset(rst),.signals(signals));
     reg_file  u1(.clk(clk),.regWrite(regWrite),.writeData(writeData),.Rsrc1(Rsrc1),.Rsrc2(Rsrc2),.Rdst(Rdst),.readData1(regFileOut),.readData2(readData2));
-    always @(posedge clk) 
+
+    always @(*) 
     begin: decode_unit_op
         if(signals[18]) //  detect if output is from in Register or register file
-            readData1 <= inPort;
+            readData1 = inPort;
         else
-            readData1 <= regFileOut;
+            readData1 = regFileOut;
     end// decode_unit_op
 endmodule
