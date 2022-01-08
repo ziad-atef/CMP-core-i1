@@ -9,8 +9,9 @@ module memStage(
     input  [31:0] prev_SP,
     input  [2:0] SP_select,
     input  is_Prev_SP,
+    input reset_epc,
 
-    output wire changeEPC,
+    output wire[1:0] changeEPC,
     output reg [1 :0] o_wb,
     output [15:0] o_aluData,
     output [31:0] o_memData,
@@ -19,6 +20,7 @@ module memStage(
 );
     reg  [31:0]  address;
     reg  [31:0]  writeData;
+    reg [31:0] EPC;
     wire  [31:0]  SP_out;
 
     assign new_SP = SP_out;
@@ -26,6 +28,15 @@ module memStage(
     STACK_POINTER SP (.clk(clk) , .Control_Mux(SP_select) , .Rst(i_reset),.Output_Signal(SP_out));
 
     always @(*) begin
+
+        if (reset_epc) begin 
+            EPC = 0;
+        end
+
+        if (changeEPC != 2'b00) begin 
+            EPC = i_pc;
+        end
+
         if(i_isStack) begin
             address = (is_Prev_SP) ? prev_SP : SP_out;
         end

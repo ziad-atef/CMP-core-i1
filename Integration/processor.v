@@ -165,7 +165,7 @@ wire [15:0] writeBackData;
     wire [31:0] o_MemoryStage_MemData; 
     wire [31:0] o_MemoryStage_NewStack;
     wire [31:0] o_MemBuf_oldStack;
-    wire changeEPC;
+    wire [1:0] changeEPC;
     memStage MemStageObj(
         .clk(clk) ,                // 1 bit
         .i_reset(signals[30]),            // 1 bit
@@ -185,7 +185,8 @@ wire [15:0] writeBackData;
         .o_wb(o_MemoryStage_Wb) ,              // 4 bit
         .o_aluData(o_MemoryStage_alu) ,         // 16 bit
         .o_memData(o_MemoryStage_MemData),           // 32 bit
-        .new_SP(o_MemoryStage_NewStack)
+        .new_SP(o_MemoryStage_NewStack),
+        .reset_epc(1'b0)
         // .o_hazardUnit()  // 20 bit
     );
 
@@ -197,12 +198,13 @@ wire [15:0] writeBackData;
     .i_alu(o_MemoryStage_alu),               // 16 bit
     .i_Rdst(o_aluBuffer_Rdst),              // 3 bit
     .i_SP(o_MemoryStage_NewStack),
-
+    .i_changeEPC(changeEPC),
     .o_WB(o_MemBuf_Wb),                // 2 bit
     .o_MemData(o_MemBuf_MemData) ,          // 32 bit
     .o_alu(o_MemBuf_alu),               // 16 bit
     .o_Rdst(o_MemBuf_Rdst),               // 3 bit
-    .o_SP(o_MemBuf_oldStack)
+    .o_SP(o_MemBuf_oldStack),
+    .o_changeEPC(changeEPC)
 );
 
 
