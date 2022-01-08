@@ -19,12 +19,12 @@ wire [15:0] writeBackData;
 // -------------------------------------------------------- Fetch Stage --------------------------------------
     wire [31:0] tmpPc, tmpInstruction;
     reg [3:0] pcPlace;
-    wire [23:0] signals;
+    wire [34:0] signals;
 
     fetch fetchObj(
         .clk(clk),                                                              //1  bits
         .pc_select(signals[22:21]),                                             //2  bits
-        .pc_place(4'd0),                                                        //4  bits
+        .pc_place(signals[27:24]),                                                        //4  bits
         .index(3'd3),                                                           //3  bits
         .IVT(32'd12),                                                           //32  bits
         .ret(32'd27),                                                           //32  bits
@@ -66,7 +66,7 @@ wire [15:0] writeBackData;
         .opcode(instruction[31:25]),                                             // 7  bits 
         .writeData(writeBackData),                                               // 16 bits
         .inPort(in),                                                          // 16 bits      
-        .signals(signals),                                                       // 23 bits
+        .signals(signals),                                                       // 35 bits
         .readData1(readData1),                                                   // 16 bits
         .readData2(readData2)                                                    // 16 bits
     );

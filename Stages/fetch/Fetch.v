@@ -14,7 +14,7 @@ module fetch(
     always @(posedge clk) begin
     // always @(*) begin
         case (pc_place)
-            4'b00:
+            4'b0000:
                 case (pc_select) 
                     4'b00:
                         tempPc = tempPc;
@@ -40,7 +40,7 @@ module fetch(
             4'b0111:
                 tempPc  = { {16{1'b0}} , call};
             4'b1000:
-                tempPc  = reset; // zero extend 
+                tempPc  = instruction; // zero extend 
             default:
                 tempPc = tempPc + 1;
         endcase

@@ -42,7 +42,7 @@ input [19:0] i_address;
 input [31:0] i_data_in; 
 output reg [31:0] o_data_out;
 
-reg [15:0] RAM [0:2**10];
+reg [15:0] RAM [0:2**20];
 integer adrs;
 
 always @(posedge clk) begin: data_mem_op

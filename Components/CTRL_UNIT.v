@@ -10,11 +10,20 @@ module CTRL_UNIT(
         input reset;
         output reg [34:0]signals;
 
+	reg isReset;
 
         always @(*)
         begin: ctrl_unit_op
                 if(reset)
+		begin
                         signals = 35'b11110001001100111000001111100011;
+			isReset = 1;
+		end
+		else if(isReset)
+		begin
+			signals = 35'b11111000001100111000001111100011;
+			isReset = 0;
+		end
                 else
                         case (opcode)  
                                 //one operand

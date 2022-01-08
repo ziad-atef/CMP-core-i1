@@ -32,10 +32,10 @@ module INST_MEM(
     input [31:0] address;
     output reg [31:0] data_out;
 
-    reg [15:0] RAM [0:2**10];
+    reg [15:0] RAM [0:2**20];
     integer adrs;
    always @(address) begin
       adrs = address;
-      data_out = {RAM[adrs+1],RAM[adrs]};
+      data_out = {RAM[adrs],RAM[adrs+1]};
    end
 endmodule // INST_MEM
