@@ -13,6 +13,7 @@ module fetch_dec_buf (
         if(enable == 1'b1) begin
             o_pc <=i_pc;
             o_instruction <=i_instruction;
+            o_instruction <= i_instruction;
         end
     end
 endmodule
