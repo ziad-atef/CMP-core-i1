@@ -42,7 +42,7 @@ wire [15:0] writeBackData;
     );
 
     fetch_dec_buf fetchBuf (
-        // .rst(rst),
+        .rst(signals[31]),
         .clk(clk),  
         .enable(1'b1),
         .i_pc(tmpPc), 
@@ -75,7 +75,8 @@ wire [15:0] writeBackData;
         .Rsrc1(instruction[21:19]),                                              // 3  bits
         .Rsrc2(instruction[18:16]),                                              // 3  bits
         .Rdst(o_MemBuf_Rdst),                                                    // 3  bits
-        .execption({o_MemBuf_changeEPC,changeEPC}),                                                            // 4  bits
+        .execption({o_MemBuf_changeEPC,changeEPC}),                              // 4  bits
+        .interrupt({INT_signal3,INT_signal2,INT_signal1}),                       // 3  bits
         .opcode(instruction[31:25]),                                             // 7  bits 
         .writeData(writeBackData),                                               // 16 bits
         .inPort(in),                                                             // 16 bits      
@@ -182,7 +183,7 @@ wire [15:0] writeBackData;
     
     memStage MemStageObj(
         .clk(clk) ,                // 1 bit
-        .i_reset(signals[30]),            // 1 bit
+        .i_reset(signals[28]),            // 1 bit
         .i_isStack(o_aluBuffer_Mem[7]),          // 1 bit
         .i_isPushPc(o_aluBuffer_Mem[8]),         // 1 bit
         .i_memRead(o_aluBuffer_Mem[2]),          // 1 bit
@@ -207,6 +208,7 @@ wire [15:0] writeBackData;
     );
 
     Mem_WB_buff Mem_WB_buffObj(
+    .rst(signals[28]),
     .clk(clk),                 // 1 bit
     .enable(1'b1),              // 1 bit
     .i_WB(o_MemoryStage_Wb),                // 4 bit

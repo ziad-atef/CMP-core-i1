@@ -4,6 +4,7 @@ module CTRL_UNIT(
         reset,
         CtrlHaz,
         exceptions,
+        interrupts,
         signals
  );
 
@@ -12,6 +13,7 @@ module CTRL_UNIT(
         input reset;
         input CtrlHaz;
         input [3:0]exceptions;
+        input [2:0]interrupts;
         output reg [40:0]signals;
 
 	reg isReset;
@@ -35,6 +37,14 @@ module CTRL_UNIT(
                                 4'b0010 :    signals = 41'b00000000011100011001100111000001111100011;
                                 4'b0100 :    signals = 41'b00000000011111000001100111000001111100011;
                                 4'b1000 :    signals = 41'b00000000011111000001100111000001111100011;
+                        endcase
+                end
+                else if(interrupts != 0)
+                begin
+                        case (interrupts)  
+                                3'b001 :    signals = 41'b00000000000000100001100111000001111100011;
+                                3'b010 :    signals = 41'b00000000000000101001100111000001111100011;
+                                3'b100 :    signals = 41'b00000000011101000001100111000001111100011;
                         endcase
                 end
                 else
@@ -66,7 +76,7 @@ module CTRL_UNIT(
                                 7'b1010110 :    signals = 41'b00110000000000000001100111000001011100011; //JC
                                 7'b1010111 :    signals = 41'b01000000000000000001100111000001011100011; //JMP
                                 7'b1111010 :    signals = 41'b11001101000000000001100111000001011101111; //CALL
-                                
+                                7'b1111110 :    signals = 41'b11001101000000000001100111000001011101111; //INT
                         endcase
                 
                 if(CtrlHaz)
