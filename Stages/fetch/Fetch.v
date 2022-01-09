@@ -39,7 +39,7 @@ module fetch(
             4'b0101:
                 tempPc  = index + IVT;
             4'b0110:
-                tempPc  = ret;
+                tempPc  = {4'b0,ret[27:0]};
             4'b0111:
                 tempPc  = { {16{1'b0}} , call};
             4'b1000:
