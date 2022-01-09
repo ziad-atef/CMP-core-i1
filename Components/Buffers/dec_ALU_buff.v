@@ -42,6 +42,8 @@ module dec_alu_buf
             o_Rsrc2<=      0;
             o_Rdst<=       0;
             o_immd<=       0;
+            o_output_write <= 0 ;
+            out_INT <=0;
         end
         else if(enable == 1'b1) begin
             o_WB <=         i_WB;
