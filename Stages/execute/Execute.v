@@ -34,7 +34,7 @@ module execute(
     input [15:0] data2_val;
     input [15:0] prev_ALU;
     input [15:0] prev_mem;
-    input [2:0] in_control_hazards ;
+    input [2:0] in_control_hazards;
 
     output [15:0] ALU_out;
     output [3:0] output_flags;

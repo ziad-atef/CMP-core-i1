@@ -19,17 +19,18 @@ wire [15:0] writeBackData;
 // -------------------------------------------------------- Fetch Stage --------------------------------------
     wire [31:0] tmpPc, tmpInstruction;
     reg [3:0] pcPlace;
-    wire [39:0] signals;
+    wire [40:0] signals;
+    wire [15:0] tmpAlu_Out;
 
     fetch fetchObj(
         .clk(clk),                                                              //1  bits
         .pc_select(signals[22:21]),                                             //2  bits
-        .pc_place(signals[27:24]),                                                        //4  bits
+        .pc_place(signals[27:24]),                                              //4  bits
         .index(3'd3),                                                           //3  bits
         .IVT(32'd12),                                                           //32  bits
         .ret(32'd27),                                                           //32  bits
         .reset(32'd57),                                                         //32  bits
-        .call(16'd33),                                                          //16  bits
+        .call(tmpAlu_Out),                                                      //16  bits
         .new_pc(tmpPc) ,                                                        //32  bits
         .instruction(tmpInstruction)                                            //32  bits
         // ,.intFlag(intFlag)
@@ -48,24 +49,26 @@ wire [15:0] writeBackData;
     reg [15:0] writeData;
 
     wire [1:0] o_decBuf_Wb;
-    wire [7:0] o_decBuf_Mem;
+    wire [8:0] o_decBuf_Mem;
     wire [13:0] o_decBuf_Ex;
     wire  o_decBuf_chgFlag ;
     wire [31:0] o_decBuf_pc;
     wire [2:0] o_decBuf_Rsrc1, o_decBuf_Rsrc2, o_decBuf_Rdst;
     wire [15:0] o_decBuf_immd, o_decBuf_ReadData1, o_decBuf_ReadData2;
     wire o_decBuf_outputWrite ;
+    wire HDU_to_CU;
 
     decode decodeObj(
         .clk(clk),                                                               // 1  bits
         .rst(rst),                                                               // 1  bits
         .regWrite(o_MemBuf_Wb[1]),                                               // 1  bits 
+        .CtrlHaz(HDU_to_CU),                                                     // 1  bits 
         .Rsrc1(instruction[21:19]),                                              // 3  bits
         .Rsrc2(instruction[18:16]),                                              // 3  bits
         .Rdst(o_MemBuf_Rdst),                                                    // 3  bits
         .opcode(instruction[31:25]),                                             // 7  bits 
         .writeData(writeBackData),                                               // 16 bits
-        .inPort(in),                                                          // 16 bits      
+        .inPort(in),                                                             // 16 bits      
         .signals(signals),                                                       // 35 bits
         .readData1(readData1),                                                   // 16 bits
         .readData2(readData2)                                                    // 16 bits
@@ -74,11 +77,11 @@ wire [15:0] writeBackData;
 
     dec_alu_buf dec_alu_bufObj 
     (
-    // input rst,
+        .rst(signals[30]),
         .clk(clk),
         .enable(1'b1),
         .i_WB( {signals[19], signals[0]}),  // 2 bits
-        .i_Mem({signals[36:32],signals[4:2]}),               // 3 bits
+        .i_Mem({signals[40],signals[36:32],signals[4:2]}),               // 3 bits
         .i_Ex ({signals[39:37],signals[16:6]}) ,             // 13 bits
         .i_chg_flag(1'b0),                  // 1 bit
         .i_pc(pc),                          // 32 bits
@@ -107,16 +110,15 @@ wire [15:0] writeBackData;
 // -------------------------------------------------------- Execute Stage --------------------------------------
     wire [1:0]  o_aluBuffer_Wb;
     wire [3:0]  o_aluBuffer_flags;
-    wire [7:0]  o_aluBuffer_Mem;
+    wire [8:0]  o_aluBuffer_Mem;
     wire [31:0] o_aluBuffer_pc;
     wire [2:0]  o_aluBuffer_Rdst;
     wire [15:0] o_aluBuffer_ReadData1;
     wire [15:0] o_aluBuffer_alu;
-    wire [15:0] tmpAlu_Out;
     wire [3:0]  tmpFlags;
 
     wire [1:0] Alu_Src1, Alu_Src2;
-    wire HDU_to_CU ;
+    
     execute ExcecuteObj(
         .clk(clk),                                      // 1  bit
         .data1(o_decBuf_Ex[10]),                        // 1  bit
@@ -170,7 +172,7 @@ wire [15:0] writeBackData;
         .clk(clk) ,                // 1 bit
         .i_reset(signals[30]),            // 1 bit
         .i_isStack(o_aluBuffer_Mem[7]),          // 1 bit
-        .i_isPushPc(1'b0),         // 1 bit
+        .i_isPushPc(o_aluBuffer_Mem[8]),         // 1 bit
         .i_memRead(o_aluBuffer_Mem[2]),          // 1 bit
         .i_memWrite(o_aluBuffer_Mem[1]),         // 1 bit
         .i_en32(o_aluBuffer_Mem[0]),             // 1 bit

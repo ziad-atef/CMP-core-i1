@@ -1,7 +1,7 @@
 module alu_mem_buff     
     #( parameter    
         WbSize  = 2,
-        MemSize = 8, 
+        MemSize = 9, 
         flagSize =4
     )(
     input rst,
