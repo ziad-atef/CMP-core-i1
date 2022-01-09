@@ -57,7 +57,7 @@ class Assembler:
 
         # Double Check if the input is 1 String, without being HLT, NOP, SETC, RET, Or RTI
         # Convert to Hexa and return it
-        if len(command_as_list) == 1 and command_as_list[0].upper() not in ['HLT', 'NOP', 'SETC', "RET", "RTI"]:
+        if len(command_as_list) == 1 and command_as_list[0].upper() not in [self.commands['HLT'], self.commands['NOP'], self.commands['SETC'], self.commands["RET"], self.commands["RTI"]]:
             command = command_as_list[0].replace("\n", "")
             hexa_int = int(command, 16)
             binary  = binary = bin(hexa_int)
@@ -78,10 +78,10 @@ class Assembler:
             return command_as_list[0] + self.check_operand(command_as_list[1]) + self.check_operand(command_as_list[2]) + "000" + " \n"
 
         elif operand in [self.commands["JZ"], self.commands["JN"], self.commands["JC"], self.commands["JMP"], self.commands["OUT"], self.commands["PUSH"], self.commands["CALL"]]:
-            return command_as_list[0] + "000" + command_as_list[1] + "000" + " \n"
+            return command_as_list[0] + "000" + self.check_operand(command_as_list[1]) + "000" + " \n"
         
         elif operand in [self.commands["NOP"], self.commands["HLT"], self.commands["SETC"], self.commands["RET"], self.commands["RTI"]]:
-            return "".join(command_as_list) + "000000000" + " \n"
+            return command_as_list[0] + "000000000" + " \n"
         
         elif operand in [self.commands['POP'],  self.commands['IN']]: # Register
             return command_as_list[0] + self.check_operand(command_as_list[1]) + "000000" + " \n"
@@ -94,13 +94,13 @@ class Assembler:
             }
             return command_as_list[0] + addresses[command_as_list[1]] + "000000" + " \n"
         
-        elif operand in [self.commands["IADD"], self.commands["LDD"]]:
-            return command_as_list[0] + self.check_operand(command_as_list[1]) + self.check_operand(command_as_list[3]) + "000" + self.check_operand(command_as_list[2])
+        elif operand in [self.commands["IADD"]]:
+            return command_as_list[0] + self.check_operand(command_as_list[1]) + self.check_operand(command_as_list[2]) + "000" + self.check_operand(command_as_list[3])
         
         elif operand == self.commands["LDM"] : 
             return command_as_list[0] + self.check_operand(command_as_list[1]) + "000" + "000" + self.check_operand(command_as_list[2]) 
         
-        elif operand == self.commands["STD"] : 
+        elif operand in [self.commands["STD"], self.commands["LDD"]] : 
             return command_as_list[0] + "000" + self.check_operand(command_as_list[1]) + self.check_operand(command_as_list[3]) + self.check_operand(command_as_list[2])
         
         return "xxxxxxxxxxxxxxxx" + " \n"
@@ -157,9 +157,9 @@ class Assembler:
                 index = int(seperated_instruction[1], 16) # If Org: Read the second Operand as the index
 
             else: # If not Org
-                if len(seperated_instruction) == 1:
+                if len(seperated_instruction) == 1 and seperated_instruction[0] not in [self.commands['HLT'] , self.commands['NOP'], self.commands['SETC'], self.commands["RET"], self.commands["RTI"]]:
                     try: # Numeric Insturction
-                        hexa_command = instruction[0]
+                        hexa_command = instruction
                         hexa = int(hexa_command, 16)
                         hex_as_binary = bin(hexa)
                         padded_binary = hex_as_binary[2:].zfill(16) + '\n'
