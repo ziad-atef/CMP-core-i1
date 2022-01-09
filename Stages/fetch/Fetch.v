@@ -13,7 +13,7 @@ module fetch(
 );
 
     reg [31:0] tempPc = -1;
-    HDU_INT u(.i_instruction(instruction) , .o_int(to_CU));
+    HDU_INT u(.i_instruction(instruction) , .o_int(to_CU), .clk(clk));
     always @(posedge clk) begin
     // always @(*) begin
         case (pc_place)
@@ -37,7 +37,7 @@ module fetch(
             4'b0100:
                 tempPc  =  6;
             4'b0101:
-                tempPc  = index + IVT;
+                tempPc  = index + instruction;
             4'b0110:
                 tempPc  = {4'b0,ret[27:0]};
             4'b0111:

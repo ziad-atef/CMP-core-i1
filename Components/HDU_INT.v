@@ -1,12 +1,13 @@
 module HDU_INT (
+clk,
     i_instruction,
     o_int,
 );
-
+input clk;
 input [31:0] i_instruction;
 output reg o_int ;
 
-always @(*) begin
+always @(negedge clk) begin
     
     // output signal
     o_int = 1'b0;

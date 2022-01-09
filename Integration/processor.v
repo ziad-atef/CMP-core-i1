@@ -30,7 +30,7 @@ wire [15:0] writeBackData;
         .clk(clk),                                                              //1  bits
         .pc_select(signals[22:21]),                                             //2  bits
         .pc_place(signals[27:24]),                                              //4  bits
-        .index(3'd3),                                                           //3  bits
+        .index(instruction[24:22]),                                             //3  bits
         .IVT(32'd12),                                                           //32  bits
         .ret(32'd27),                                                           //32  bits
         .reset(32'd57),                                                         //32  bits
