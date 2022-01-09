@@ -7,6 +7,7 @@ module decode(
     Rsrc1,
     Rsrc2,
     Rdst,
+    execption,
     writeData,
     inPort,
     signals,
@@ -20,6 +21,7 @@ module decode(
     input [2:0] Rsrc1;
     input [2:0] Rsrc2;
     input [2:0] Rdst;
+    input [3:0] execption;
     input [6:0] opcode;
     input [15:0] writeData;
     input [15:0] inPort;
@@ -28,7 +30,7 @@ module decode(
     output [15:0] readData2;
         
     wire [15:0] regFileOut;
-    CTRL_UNIT u0(.clk(clk), .opcode(opcode), .reset(rst), .CtrlHaz(CtrlHaz), .signals(signals));
+    CTRL_UNIT u0(.clk(clk), .opcode(opcode), .reset(rst), .CtrlHaz(CtrlHaz), .exceptions(execption), .signals(signals));
     reg_file  u1(.clk(clk),.regWrite(regWrite),.writeData(writeData),.Rsrc1(Rsrc1),.Rsrc2(Rsrc2),.Rdst(Rdst),.readData1(regFileOut),.readData2(readData2));
 
     always @(*) 

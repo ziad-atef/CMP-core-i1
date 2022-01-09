@@ -57,6 +57,8 @@ wire [15:0] writeBackData;
     wire [15:0] o_decBuf_immd, o_decBuf_ReadData1, o_decBuf_ReadData2;
     wire o_decBuf_outputWrite ;
     wire HDU_to_CU;
+    wire [1:0] changeEPC;
+    wire [1:0] o_MemBuf_changeEPC;
 
     decode decodeObj(
         .clk(clk),                                                               // 1  bits
@@ -66,6 +68,7 @@ wire [15:0] writeBackData;
         .Rsrc1(instruction[21:19]),                                              // 3  bits
         .Rsrc2(instruction[18:16]),                                              // 3  bits
         .Rdst(o_MemBuf_Rdst),                                                    // 3  bits
+        .execption({o_MemBuf_changeEPC,changeEPC}),                                                            // 4  bits
         .opcode(instruction[31:25]),                                             // 7  bits 
         .writeData(writeBackData),                                               // 16 bits
         .inPort(in),                                                             // 16 bits      
@@ -167,7 +170,7 @@ wire [15:0] writeBackData;
     wire [31:0] o_MemoryStage_MemData; 
     wire [31:0] o_MemoryStage_NewStack;
     wire [31:0] o_MemBuf_oldStack;
-    wire [1:0] changeEPC;
+    
     memStage MemStageObj(
         .clk(clk) ,                // 1 bit
         .i_reset(signals[30]),            // 1 bit
@@ -208,7 +211,7 @@ wire [15:0] writeBackData;
     .o_alu(o_MemBuf_alu),               // 16 bit
     .o_Rdst(o_MemBuf_Rdst),               // 3 bit
     .o_SP(o_MemBuf_oldStack),
-    .o_changeEPC(changeEPC)
+    .o_changeEPC(o_MemBuf_changeEPC)
 );
 
 
