@@ -178,6 +178,8 @@ wire [15:0] writeBackData;
         .i_aluData(o_aluBuffer_alu),        // 16 bit
         .i_pc(o_aluBuffer_pc),             // 32 bit
         .i_instruction(o_aluBuffer_ReadData1),    // 32 bit
+        .in_flags(o_aluBuffer_flags),
+
         .prev_SP(o_MemBuf_oldStack),
         .SP_select(o_aluBuffer_Mem[5:3]),
         .is_Prev_SP(o_aluBuffer_Mem[6]),

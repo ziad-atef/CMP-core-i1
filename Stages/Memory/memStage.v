@@ -10,6 +10,7 @@ module memStage(
     input  [2:0] SP_select,
     input  is_Prev_SP,
     input reset_epc,
+    input [3:0]in_flags,
 
     output wire[1:0] changeEPC,
     output reg [1 :0] o_wb,
@@ -45,7 +46,7 @@ module memStage(
         end
         // o_hazardUnit = address;
         if(i_isPushPc) begin
-          writeData = i_pc + 1;
+          writeData = ((i_pc + 1) | {in_flags , 28'd0} );
         end
         else begin
           writeData = i_instruction;
