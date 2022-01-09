@@ -71,7 +71,9 @@ module memStage(
     
     HDU_EXCEPTIONS hduExceptions(
         .i_address(address),
-        .o_changeEPC(changeEPC)
+        .o_changeEPC(changeEPC),
+        .mem_write(i_memWrite),
+        .mem_read(i_memRead)
     );
     assign o_aluData = i_aluData ; 
 endmodule
