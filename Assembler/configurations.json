@@ -1,6 +1,6 @@
 {
-    "input_path" : "TwoOperand.asm",
-    "output_path" : "TwoOperand.mem",
+    "input_path" : "Branch.asm",
+    "output_path" : "Branch.mem",
     "mode" : "memory",
     "instance" : "/ram/ram"
 }
