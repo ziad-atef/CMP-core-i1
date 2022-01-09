@@ -8,7 +8,7 @@ input [2:0] Control_Mux;
 input Rst , clk;
 output reg[31:0] Output_Signal;
 
-always @(*) begin
+always @(posedge clk) begin
     //RESET
     if (Rst) Output_Signal = 1048575;
     else 
