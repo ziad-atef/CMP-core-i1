@@ -22,6 +22,10 @@ wire [15:0] writeBackData;
     wire [40:0] signals;
     wire [15:0] tmpAlu_Out;
 
+    wire INT_signal1;
+    wire INT_signal2;
+    wire INT_signal3;
+
     fetch fetchObj(
         .clk(clk),                                                              //1  bits
         .pc_select(signals[22:21]),                                             //2  bits
@@ -32,8 +36,9 @@ wire [15:0] writeBackData;
         .reset(32'd57),                                                         //32  bits
         .call(tmpAlu_Out),                                                      //16  bits
         .new_pc(tmpPc) ,                                                        //32  bits
-        .instruction(tmpInstruction)                                            //32  bits
+        .instruction(tmpInstruction),                                           //32  bits
         // ,.intFlag(intFlag)
+        .to_CU(INT_signal1)
     );
 
     fetch_dec_buf fetchBuf (
@@ -43,7 +48,9 @@ wire [15:0] writeBackData;
         .i_pc(tmpPc), 
         .i_instruction(tmpInstruction),               
         .o_pc(pc),          
-        .o_instruction(instruction)
+        .o_instruction(instruction),
+        .in_INT(INT_signal1),
+        .out_INT(INT_signal2)
     );
 // -------------------------------------------------------- Deocde Stage --------------------------------------
     reg [15:0] writeData;
@@ -95,6 +102,7 @@ wire [15:0] writeBackData;
         .i_read_data1(readData1),           // 16 bits 
         .i_read_data2(readData2),           // 16 bits
         .i_output_write(signals[23]),
+        .in_INT(INT_signal2),
     // ---------------------   output ---------------//
         .o_WB(o_decBuf_Wb),                     // 2 bits
         .o_Mem(o_decBuf_Mem),                   // 8 bits
@@ -107,7 +115,8 @@ wire [15:0] writeBackData;
         .o_immd(o_decBuf_immd) ,                // 16 bits
         .o_read_data1(o_decBuf_ReadData1),      // 16 bits
         .o_read_data2(o_decBuf_ReadData2),      // 16 bits
-        .o_output_write(o_decBuf_outputWrite)
+        .o_output_write(o_decBuf_outputWrite),
+        .out_INT(INT_signal3)
     );
 
 // -------------------------------------------------------- Execute Stage --------------------------------------

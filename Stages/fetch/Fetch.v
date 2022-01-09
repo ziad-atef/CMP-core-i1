@@ -7,10 +7,13 @@ module fetch(
     input [15:0] call,
 
     output [31:0] instruction,  
-    output reg [31:0] new_pc  
+    output reg [31:0] new_pc ,
+    output wire to_CU
     // ,output reg intFlag     
 );
+
     reg [31:0] tempPc = -1;
+    HDU_INT u(.i_instruction(instruction) , .o_int(to_CU));
     always @(posedge clk) begin
     // always @(*) begin
         case (pc_place)
