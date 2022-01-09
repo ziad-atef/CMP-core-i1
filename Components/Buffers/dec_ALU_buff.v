@@ -1,11 +1,11 @@
 module dec_alu_buf 
     #( parameter    
         WbSize  = 2,
-        MemSize = 8,
+        MemSize = 9,
         ExSize  = 14
     )
     (
-    // input rst,
+    input rst,
     input  clk,enable,
 
     input [WbSize -1 :0] i_WB, 
@@ -27,20 +27,20 @@ module dec_alu_buf
     output reg o_output_write 
 );
     always @(negedge clk) begin
-        // if(rst == 1'b1) begin
-        //     o_WB <=        0;
-        //     o_Mem <=       0;
-        //     o_Ex <=        0;
-        //     o_chg_flag <=  0;
-        //     o_pc<=         0;
-        //     o_read_data1<= 0;
-        //     o_read_data2<= 0;
-        //     o_Rsrc1<=      0;
-        //     o_Rsrc2<=      0;
-        //     o_Rdst<=       0;
-        //     o_immd<=       0;
-        // end
-        if(enable == 1'b1) begin
+        if(rst == 1'b1) begin
+            o_WB <=        0;
+            o_Mem <=       0;
+            o_Ex <=        0;
+            o_chg_flag <=  0;
+            o_pc<=         0;
+            o_read_data1<= 0;
+            o_read_data2<= 0;
+            o_Rsrc1<=      0;
+            o_Rsrc2<=      0;
+            o_Rdst<=       0;
+            o_immd<=       0;
+        end
+        else if(enable == 1'b1) begin
             o_WB <=         i_WB;
             o_Mem <=        i_Mem;
             o_Ex <=         i_Ex;

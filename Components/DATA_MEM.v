@@ -49,7 +49,7 @@ always @(posedge clk) begin: data_mem_op
     adrs = i_address;
     if (i_memRead) begin
         if(i_en32) begin
-            o_data_out = {RAM[adrs+1],RAM[adrs]};
+            o_data_out = {RAM[adrs-1],RAM[adrs]};
         end
         else begin
             o_data_out = {16'b0,RAM[adrs]};
@@ -61,7 +61,7 @@ always @(posedge clk) begin: data_mem_op
 
     if (i_memWrite) begin
         if(i_en32) begin
-            {RAM[adrs+1],RAM[adrs]} = i_data_in;
+            {RAM[adrs-1],RAM[adrs]} = i_data_in;
         end
         else begin
             RAM[adrs] = i_data_in[15:0];
