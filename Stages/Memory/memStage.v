@@ -65,6 +65,7 @@ module memStage(
         .i_en32(i_en32),
         .i_address(address),
         .i_data_in(writeData),
+        .i_isStack(i_isStack),
         .o_data_out(o_memData)
     );
 

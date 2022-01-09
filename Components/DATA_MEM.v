@@ -31,10 +31,12 @@ module DATA_MEM(
     i_memWrite,
     i_en32,
     i_address,
-    i_data_in, 
+    i_data_in,
+    i_isStack, 
     o_data_out
  );
 input clk;
+input i_isStack;
 input i_memRead;
 input i_memWrite;
 input i_en32;   
@@ -51,6 +53,9 @@ always @(posedge clk) begin: data_mem_op
         if(i_en32) begin
             o_data_out = {RAM[adrs-1],RAM[adrs]};
         end
+        else if(i_isStack) begin
+            o_data_out = {16'b0,RAM[adrs + 1]};
+        end    
         else begin
             o_data_out = {16'b0,RAM[adrs]};
         end
