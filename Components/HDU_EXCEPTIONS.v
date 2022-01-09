@@ -2,14 +2,15 @@ module HDU_EXCEPTIONS (
     i_address,
     mem_read,
     mem_write,
+    clk,
     o_changeEPC,
 );
-
+input  clk; 
 input [31:0] i_address;
 input mem_read, mem_write;
 output reg [1:0] o_changeEPC;
 
-always @(*) begin
+always @(negedge clk) begin
     
     o_changeEPC = 2'b00;
     if (mem_read || mem_write)

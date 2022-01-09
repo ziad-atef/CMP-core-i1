@@ -74,6 +74,7 @@ module memStage(
         .i_address(address),
         .o_changeEPC(changeEPC),
         .mem_write(i_memWrite),
+        .clk(clk),
         .mem_read(i_memRead)
     );
     assign o_aluData = i_aluData ; 
