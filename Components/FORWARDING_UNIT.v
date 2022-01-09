@@ -20,12 +20,12 @@ always @(*) begin
 
     // For Rsrc1 
     
-    if (WB_wb && Rsrc1 == Rdst_wb) exec_sel1_temp = 2'b10;
-    if (WB_mem && Rsrc1 == Rdst_mem) exec_sel1_temp = 2'b01;
+    if (WB_wb && (Rsrc1 == Rdst_wb)) exec_sel1_temp = 2'b10;
+    if (WB_mem && ( Rsrc1 == Rdst_mem)) exec_sel1_temp = 2'b01;
 
     // For Rsrc2
-    if (WB_wb && Rsrc2 == Rdst_wb) exec_sel2_temp = 2'b10;
-    if (WB_mem && Rsrc2 == Rdst_mem) exec_sel2_temp = 2'b01;
+    if (WB_wb && (Rsrc2 == Rdst_wb)) exec_sel2_temp = 2'b10;
+    if (WB_mem &&(Rsrc2 == Rdst_mem)) exec_sel2_temp = 2'b01;
 
 end
 endmodule

@@ -148,7 +148,7 @@ wire [15:0] writeBackData;
         .mem_flags(o_MemBuf_MemData[31:28]),
         .input_flags(o_aluBuffer_flags), 
         .prev_ALU(o_aluBuffer_alu),
-        .prev_mem(o_MemBuf_MemData[15:0]),
+        .prev_mem(writeBackData),
         .output_flags(tmpFlags),
         .to_control_unit(HDU_to_CU)  
     );
