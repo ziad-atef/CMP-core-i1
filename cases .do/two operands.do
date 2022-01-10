@@ -47,8 +47,8 @@ mem load -filltype value -filldata 0000001010001010 -fillradix binary /processor
 force -freeze sim:/processor/rst 1 0
 run 
 force -freeze sim:/processor/rst 0 0
-force -freeze sim:/processor/in 16'h5 0
 run
+force -freeze sim:/processor/in 16'h5 0
 run
 force -freeze sim:/processor/in 16'h0019 0
 run
